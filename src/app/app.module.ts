@@ -9,6 +9,11 @@ import { ListPage } from '../pages/list/list';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { GooglePlus } from '@ionic-native/google-plus';
+import { Facebook } from '@ionic-native/facebook';
+
+import { AuthService } from './auth.service';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -28,7 +33,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    GooglePlus,
+    Facebook,
+
+    AuthService
   ]
 })
 export class AppModule {}
