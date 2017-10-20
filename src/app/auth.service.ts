@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
-import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Platform } from 'ionic-angular';
@@ -11,15 +10,12 @@ import { Platform } from 'ionic-angular';
 @Injectable()
 export class AuthService {
 
-    private user: Observable<firebase.User>;
-    private fbuser: firebase.User;
+    private user: firebase.User = null;
 
     constructor(private google: GooglePlus, private facebook: Facebook, private afAuth: AngularFireAuth, public platform: Platform) {
-      this.user = afAuth.authState;
-
-      this.user.subscribe(next => {
-         console.log(next);
-         this.fbuser = next;
+      this.afAuth.authState.subscribe(user => {
+         console.log(user);
+         this.user = user;
       });
     }
 
@@ -33,10 +29,10 @@ export class AuthService {
         }).then((obj) => {
           this.afAuth.auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(obj.idToken))
           .then((success) => {
-            console.log("sign in success");
+            console.log("signin success");
           })
           .catch((error) => {
-            console.log("sign in error: " + error);
+            console.log("signin error: " + error);
           });
         }).catch((err) => {
           console.log(err);
@@ -48,12 +44,34 @@ export class AuthService {
     }
 
     loginFacebook() {
+      if(this.platform.is("cordova")) {
         this.facebook.login(['public_profile', 'email']).then((res: FacebookLoginResponse) => {
-            console.log(res);
-            alert(res.authResponse.accessToken);
-          }).catch((e) => {
-            console.log("Error logging into Facebook", e);
-          }
-        );
+          this.afAuth.auth.signInWithCredential(firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken))
+          .then((success) => {
+            console.log("signin success");
+          })
+          .catch((error) => {
+            console.log("signin error: " + error);
+          });
+        }).catch((e) => {
+          console.log("Error logging into Facebook", e);
+        });
       }
+      else {
+        this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+      }
+    }
+
+    logout() {
+      this.afAuth.auth.signOut() + " (" + this.user.providerId + ")";
+    }
+
+    getUserInfo() : String {
+      return this.user.displayName;
+    }
+
+    isAuthenticated() : Boolean {
+      return this.user !== null;
+    }
+
 }
