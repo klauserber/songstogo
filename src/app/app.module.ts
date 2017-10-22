@@ -1,3 +1,4 @@
+import { SongviewPage } from './../pages/songview/songview';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -5,6 +6,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { SongsPage } from '../pages/songs/songs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -14,8 +16,10 @@ import { Facebook } from '@ionic-native/facebook';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { AuthService } from './auth.service';
+import { SongsService } from './songs.service';
 
 
 
@@ -32,19 +36,24 @@ var firebaseconfig = {
   declarations: [
     MyApp,
     HomePage,
-    ListPage
+    ListPage,
+    SongsPage,
+    SongviewPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseconfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFirestoreModule.enablePersistence()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage
+    ListPage,
+    SongsPage,
+    SongviewPage
   ],
   providers: [
     StatusBar,
@@ -53,7 +62,8 @@ var firebaseconfig = {
     GooglePlus,
     Facebook,
 
-    AuthService
+    AuthService,
+    SongsService
   ]
 })
 export class AppModule {}
