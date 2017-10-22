@@ -1,0 +1,25 @@
+{
+    // Verwendet IntelliSense zum Ermitteln möglicher Attribute.
+    // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
+    // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
+    // to Attach add to chrome command : --remote-debugging-port=9222
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach to Chrome",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9222,
+            "url": "http://localhost:8100",
+            "webRoot": "${workspaceRoot}/www"
+        },
+        {
+            "name": "Launch in Chrome",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8100",
+            "sourceMaps": true,
+            "webRoot": "${workspaceRoot}/www"
+        }        
+    ]
+}

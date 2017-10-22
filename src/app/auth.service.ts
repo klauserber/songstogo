@@ -14,7 +14,6 @@ export class AuthService {
 
     constructor(private google: GooglePlus, private facebook: Facebook, private afAuth: AngularFireAuth, public platform: Platform) {
       this.afAuth.authState.subscribe(user => {
-         console.log(user);
          this.user = user;
       });
     }
@@ -64,10 +63,11 @@ export class AuthService {
 
     logout() {
       this.afAuth.auth.signOut() + " (" + this.user.providerId + ")";
+
     }
 
     getUserInfo() : String {
-      return this.user.displayName;
+      return this.user.displayName + " (" + this.user.providerData[0].providerId + ")";
     }
 
     isAuthenticated() : Boolean {
