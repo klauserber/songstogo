@@ -1,3 +1,5 @@
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
 import { GooglePlus } from '@ionic-native/google-plus';
@@ -6,16 +8,34 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Platform } from 'ionic-angular';
 
+export interface StgUser {
+  id: string;
+  name: string;
+}
 
 @Injectable()
 export class AuthService {
 
     private user: firebase.User = null;
 
-    constructor(private google: GooglePlus, private facebook: Facebook, private afAuth: AngularFireAuth, public platform: Platform) {
+    authState: Observable<firebase.User>;
+
+
+    constructor(private google: GooglePlus, private facebook: Facebook, private afAuth: AngularFireAuth, public platform: Platform,
+        private afs: AngularFirestore) {
+
+      this.authState = this.afAuth.authState;
+      
       this.afAuth.authState.subscribe(user => {
-         this.user = user;
+        this.user = user;
+        this.userStateChange(user);
       });
+    }
+
+    userStateChange(user: firebase.User) {
+      var userDoc: AngularFirestoreDocument<{}> = this.afs.collection("users").doc(user.uid);
+
+      
     }
 
 
