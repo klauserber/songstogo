@@ -5,6 +5,15 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Platform } from 'ionic-angular';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument  } from 'angularfire2/firestore';
+import { Observable } from 'rxjs/Observable';
+
+
+
+export interface StgUser {
+  id: string;
+  name: string;
+}
 
 
 @Injectable()
@@ -12,12 +21,38 @@ export class AuthService {
 
     private user: firebase.User = null;
 
-    constructor(private google: GooglePlus, private facebook: Facebook, private afAuth: AngularFireAuth, public platform: Platform) {
+    private userDoc: AngularFirestoreDocument<StgUser>;
+    stgUser: Observable<StgUser>;
+
+    constructor(private google: GooglePlus, private facebook: Facebook, private afAuth: AngularFireAuth,
+        public platform: Platform, private afs: AngularFirestore) {
+
+
+
       this.afAuth.authState.subscribe(user => {
-         this.user = user;
+        this.user = user;
+        this.initUserDoc();
       });
     }
 
+
+    initUserDoc() {
+      if(this.isAuthenticated()) {
+        this.userDoc = this.afs.collection<StgUser>("users").doc(this.user.uid);
+        this.stgUser = doc.valueChanges();
+
+
+        if(doc === null) {
+          this.afs.collection<StgUser>("users").add({
+            id: this.user.uid,
+            name: this.user.displayName
+          });
+          doc = this.afs.collection<StgUser>("users").doc(this.user.uid);
+        }
+        console.log(doc);
+      }
+
+    }
 
     loginGoogle() {
       if(this.platform.is("cordova")) {
