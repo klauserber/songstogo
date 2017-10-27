@@ -1,9 +1,12 @@
+import { AuthService } from './auth.service';
 import { Song } from './songs.service';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 
 import { AngularFirestore, AngularFirestoreCollection  } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+
+import * as firebase from 'firebase/app';
 
 export interface Song {
   id: string;
@@ -17,7 +20,12 @@ export class SongsService {
 
   private songsCollection: AngularFirestoreCollection<Song>;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore, private auth: AuthService) {
+    
+    auth.authState.subscribe(user => {
+      this.loggedIn(user);
+    });
+    
     this.songsCollection = afs.collection<Song>("songs");
 
     this.songs = this.songsCollection.snapshotChanges().map(action => {
@@ -30,6 +38,10 @@ export class SongsService {
 
   }
   
+  loggedIn(user: firebase.User) {
+    //this.usersCollection = afs.collection<Song>("songs");
+    
+  }
 }
 
 
