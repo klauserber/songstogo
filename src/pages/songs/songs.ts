@@ -1,5 +1,5 @@
 import { SongviewPage } from './../songview/songview';
-import { SongsService, Song } from './../../app/songs.service';
+import { DataService, Song } from './../../app/data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -18,7 +18,7 @@ export class SongsPage {
 
   public foo: string = "foooo";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public songsService: SongsService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService) {
   }
 
   ionViewDidLoad() {

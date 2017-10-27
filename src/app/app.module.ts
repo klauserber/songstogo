@@ -19,7 +19,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { AuthService } from './auth.service';
-import { SongsService } from './songs.service';
+import { DataService } from './data.service';
 
 
 
@@ -63,7 +63,7 @@ var firebaseconfig = {
     Facebook,
 
     AuthService,
-    SongsService
+    DataService
   ]
 })
 export class AppModule {}

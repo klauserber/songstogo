@@ -1,4 +1,4 @@
-import { Song } from './../../app/songs.service';
+import { Song } from './../../app/data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
