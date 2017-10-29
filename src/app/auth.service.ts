@@ -1,3 +1,4 @@
+import { DataService } from './data.service';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
@@ -17,12 +18,13 @@ export class AuthService {
 
 
     constructor(private google: GooglePlus, private facebook: Facebook, private afAuth: AngularFireAuth,
-        public platform: Platform) {
+        public platform: Platform, private data: DataService) {
 
       this.authState = this.afAuth.authState;
 
       this.authState.subscribe(user => {
         this.user = user;
+        this.data.initUserDoc(user);
       });
     }
 
@@ -71,11 +73,11 @@ export class AuthService {
 
     logout() {
       this.afAuth.auth.signOut() + " (" + this.user.providerId + ")";
-
     }
 
     getUserInfo() : String {
       return this.user.displayName + " (" + this.user.providerData[0].providerId + ")";
+
     }
 
     isAuthenticated() : Boolean {

@@ -1,4 +1,3 @@
-import { SongviewPage } from './../pages/songview/songview';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -7,6 +6,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { SongsPage } from '../pages/songs/songs';
+import { SongviewPage } from './../pages/songview/songview';
+import { SongeditPage } from './../pages/songedit/songedit';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -17,6 +18,7 @@ import { Facebook } from '@ionic-native/facebook';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { AuthService } from './auth.service';
 import { DataService } from './data.service';
@@ -38,14 +40,16 @@ var firebaseconfig = {
     HomePage,
     ListPage,
     SongsPage,
-    SongviewPage
+    SongviewPage,
+    SongeditPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseconfig),
     AngularFireAuthModule,
-    AngularFirestoreModule.enablePersistence()
+    AngularFirestoreModule.enablePersistence(),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -53,7 +57,8 @@ var firebaseconfig = {
     HomePage,
     ListPage,
     SongsPage,
-    SongviewPage
+    SongviewPage,
+    SongeditPage
   ],
   providers: [
     StatusBar,

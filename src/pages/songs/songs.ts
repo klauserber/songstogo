@@ -1,3 +1,4 @@
+import { SongeditPage } from './../songedit/songedit';
 import { SongviewPage } from './../songview/songview';
 import { DataService, Song } from './../../app/data.service';
 import { Component } from '@angular/core';
@@ -16,7 +17,6 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class SongsPage {
 
-  public foo: string = "foooo";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService) {
   }
@@ -28,6 +28,12 @@ export class SongsPage {
   songTapped(event, song: Song) {
     this.navCtrl.push(SongviewPage, {
       song: song
+    });
+  }
+
+  songNewTapped(event) {
+    this.navCtrl.push(SongeditPage, {
+      song: { title: "foo", text: "foobar" }
     });
   }
 

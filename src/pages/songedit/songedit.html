@@ -1,0 +1,39 @@
+<!--
+  Generated template for the SongeditPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Song edit: {{ song.title }}</ion-title>
+  </ion-navbar>
+    
+</ion-header>
+    
+    
+<ion-content padding>
+
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Title</ion-label>
+      <ion-input type="text" [(ngModel)]="song.title" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Text</ion-label>
+      <ion-textarea  [(ngModel)]="song.text" ></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab right top>
+    <button ion-fab (click)="songSaveTapped($event)"> 
+      <ion-icon name="save"></ion-icon>
+    </button>
+  </ion-fab>
+    
+</ion-content>
+    
