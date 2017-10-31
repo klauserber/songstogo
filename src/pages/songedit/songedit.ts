@@ -17,17 +17,18 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class SongeditPage {
 
   public song: Song;
-  
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private data: DataService) {
     this.song = navParams.get("song");
     console.log(this.song);
   }
-  
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad SongeditPage');
   }
-  
+
   songSaveTapped(event) {
     this.data.saveSong(this.song);
+    this.navCtrl.pop();
   }
 }

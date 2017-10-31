@@ -3,6 +3,7 @@ import { SongviewPage } from './../songview/songview';
 import { DataService, Song } from './../../app/data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
 /**
  * Generated class for the SongsPage page.
@@ -18,7 +19,7 @@ import { NavController, NavParams } from 'ionic-angular';
 export class SongsPage {
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService, private alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -35,6 +36,29 @@ export class SongsPage {
     this.navCtrl.push(SongeditPage, {
       song: { title: "foo", text: "foobar" }
     });
+  }
+
+  showRemoveConfirm(event, song: Song) {
+    event.stopPropagation();
+    let confirm = this.alertCtrl.create({
+      title: "Remove Song",
+      message: 'Remove "' + song.title + '"?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.dataService.removeSong(song.id);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 

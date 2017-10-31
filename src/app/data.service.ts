@@ -25,10 +25,10 @@ export class DataService {
   private songsCollection: AngularFirestoreCollection<Song>;
   private userDoc: AngularFirestoreDocument<StgUser>;
   private stgUser: StgUser;
-  
+
   constructor(private afs: AngularFirestore) {
-    
-  }
+
+}
 
 
   initUserDoc(user: firebase.User) {
@@ -56,8 +56,8 @@ export class DataService {
   }
 
   initSongsCollection() {
-    this.songsCollection = this.userDoc.collection<Song>("/songs");
-    
+    this.songsCollection = this.userDoc.collection<Song>("/songs", ref => ref.orderBy("title"));
+
     this.songs = this.songsCollection.valueChanges();
 
     /*snapshotChanges().map(action => {
@@ -67,7 +67,7 @@ export class DataService {
         return { id, ...data };
       });
     }); */
-        
+
   }
 
   saveSong(song: Song) {
@@ -78,6 +78,10 @@ export class DataService {
     else {
       this.songsCollection.doc(song.id).update(song);
     }
+  }
+
+  removeSong(id: string) {
+    this.songsCollection.doc(id).delete();
   }
 
 }
