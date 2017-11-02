@@ -17,8 +17,12 @@
 
 
 <ion-content padding>
-
-  <p>{{ song.id }}</p>
   <p>{{ song.text }}</p>
-  
+
+  <ion-fab right top>
+    <button ion-fab (click)="songEditTapped($event)">
+      <ion-icon name="create"></ion-icon>
+    </button>
+  </ion-fab>
+
 </ion-content>

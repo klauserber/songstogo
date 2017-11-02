@@ -1,6 +1,7 @@
 import { Song } from './../../app/data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { SongeditPage } from '../songedit/songedit';
 
 /**
  * Generated class for the SongviewPage page.
@@ -25,4 +26,9 @@ export class SongviewPage {
     console.log('ionViewDidLoad SongviewPage');
   }
 
+  songEditTapped(event) {
+    this.navCtrl.push(SongeditPage, {
+      song: this.song
+    });
+  }
 }
