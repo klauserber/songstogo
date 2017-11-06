@@ -20,7 +20,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
-import { FileSelectDirective } from 'ng2-file-upload';
+import { PapaParseModule } from 'ngx-papaparse';
 
 import { AuthService } from './auth.service';
 import { DataService } from './data.service';
@@ -44,7 +44,7 @@ var firebaseconfig = {
     SongsPage,
     SongviewPage,
     SongeditPage,
-    FileSelectDirective
+    PapaParseModule
   ],
   imports: [
     BrowserModule,

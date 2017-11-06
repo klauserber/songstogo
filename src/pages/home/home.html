@@ -16,7 +16,8 @@
   <button ion-button fbLogin *ngIf="!authService.isAuthenticated()" (click)="authService.loginFacebook()">Facebook Login</button>
   <button ion-button fbLogin *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Logout</button>
 
-  <p>Queue length: {{ uploader?.queue?.length }}</p>
-  <input type="file" ng2FileSelect [uploader]="uploader" />
+  <p>Import</p>
+  <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".csv">
+
 
 </ion-content>
