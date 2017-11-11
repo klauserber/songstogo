@@ -43,8 +43,7 @@ var firebaseconfig = {
     ListPage,
     SongsPage,
     SongviewPage,
-    SongeditPage,
-    PapaParseModule
+    SongeditPage
   ],
   imports: [
     BrowserModule,
@@ -52,7 +51,8 @@ var firebaseconfig = {
     AngularFireModule.initializeApp(firebaseconfig),
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    PapaParseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

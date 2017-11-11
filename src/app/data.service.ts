@@ -5,6 +5,9 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
+import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
+
+import * as moment from 'moment';
 
 export interface StgUser {
   id: string;
@@ -16,19 +19,23 @@ export interface Song {
   id: string;
   title: string;
   text: string;
+  artist: string;
+  key: string;
+  tempo: number;
+  length: number;
 }
 
 @Injectable()
 export class DataService {
   songs: Observable<Song[]>;
+  songsList: Song[];
 
   private songsCollection: AngularFirestoreCollection<Song>;
   private userDoc: AngularFirestoreDocument<StgUser>;
   private stgUser: StgUser;
 
-  constructor(private afs: AngularFirestore) {
-
-}
+  constructor(private afs: AngularFirestore, private papa: PapaParseService) {
+  }
 
 
   initUserDoc(user: firebase.User) {
@@ -60,6 +67,8 @@ export class DataService {
 
     this.songs = this.songsCollection.valueChanges();
 
+    //this.songs.share.s ( (songs) => console.log(songs));
+
     /*snapshotChanges().map(action => {
       return action.map(a => {
         const data = a.payload.doc.data() as Song;
@@ -82,6 +91,83 @@ export class DataService {
 
   removeSong(id: string) {
     this.songsCollection.doc(id).delete();
+  }
+
+  importSongs(file: File) {
+    this.papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+      complete: (results, file) => {
+          console.log('Parsed: ', results, file);
+      }
+    } as PapaParseConfig);
+  }
+
+  exportSongs() : Promise<string> {
+    return new Promise((resolve, reject) => {
+      let songs = this.songsCollection.valueChanges();
+      songs.subscribe( (songsList) => {
+        resolve(this.papa.unparse(songsList, {
+          header: true,
+        } as PapaParseConfig));
+      });
+    });
+
+  }
+
+  importSongsFromHtml(file: File) {
+    let parser = new DOMParser();
+
+    let reader = new FileReader();
+
+    reader.onloadend = (e) => {
+      let doc = parser.parseFromString(reader.result, "text/html");
+      console.log(doc);
+      this.imoprtSongsFromDoc(doc);
+    };
+    reader.readAsText(file);
+
+  }
+
+  /*
+  cells:
+       0 Name
+       1 GenreName
+       2 ArtistName
+       3 Key
+       4 Notes
+       5 Lyrics
+       6 Tempo
+       7 SongLength
+       8 Other
+  */
+  imoprtSongsFromDoc(doc: Document) : number {
+    let rows = doc.getElementsByTagName("tr");
+
+    let count = 0;
+
+    for(let r=0; r<rows.length; r++) {
+      let row = rows[r];
+      //console.log("row " + r);
+      let cells = row.cells;
+      //console.log(moment.duration("03:32").asSeconds());
+
+      let song = {
+        title: cells[0].innerHTML,
+        artist: cells[2].innerHTML,
+        key: cells[3].innerHTML,
+        text: cells[5].innerHTML,
+        tempo: Number.parseInt(cells[6].innerHTML),
+        length: moment.duration("00:" + cells[7].innerHTML).asSeconds(),
+      } as Song;
+
+      console.log(song);
+      this.saveSong(song);
+      count++;
+    }
+    return count;
+
   }
 
 }

@@ -16,8 +16,12 @@
   <button ion-button fbLogin *ngIf="!authService.isAuthenticated()" (click)="authService.loginFacebook()">Facebook Login</button>
   <button ion-button fbLogin *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Logout</button>
 
-  <p>Import</p>
-  <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".csv">
+  <div *ngIf="authService.isAuthenticated()">
+    <p>Import</p>
+    <input ion-button type="file" (change)="fileChange($event)" placeholder="Upload csv file" accept=".csv">
+    <input type="file" (change)="fileChangeHtml($event)" placeholder="Upload html file" accept=".htm,.html">
 
+    <button ion-button export  (click)="exportSongs($event)">Export Songs</button>
+  </div>
 
 </ion-content>
