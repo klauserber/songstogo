@@ -5,9 +5,12 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
-import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
+//import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
 
 import * as moment from 'moment';
+
+import * as jsyaml from 'js-yaml';
+
 
 export interface StgUser {
   id: string;
@@ -34,7 +37,7 @@ export class DataService {
   private userDoc: AngularFirestoreDocument<StgUser>;
   private stgUser: StgUser;
 
-  constructor(private afs: AngularFirestore, private papa: PapaParseService) {
+  constructor(private afs: AngularFirestore) {
   }
 
 
@@ -66,27 +69,13 @@ export class DataService {
     this.songsCollection = this.userDoc.collection<Song>("/songs", ref => ref.orderBy("title"));
 
     this.songs = this.songsCollection.valueChanges();
-
-    //this.songs.share.s ( (songs) => console.log(songs));
-
-    /*snapshotChanges().map(action => {
-      return action.map(a => {
-        const data = a.payload.doc.data() as Song;
-        const id = a.payload.doc.id;
-        return { id, ...data };
-      });
-    }); */
-
   }
 
   saveSong(song: Song) {
     if(song.id === undefined || song.id === null) {
       song.id = this.afs.createId();
-      this.songsCollection.doc(song.id).set(song);
     }
-    else {
-      this.songsCollection.doc(song.id).update(song);
-    }
+    this.songsCollection.doc(song.id).set(song);
   }
 
   removeSong(id: string) {
@@ -94,26 +83,30 @@ export class DataService {
   }
 
   importSongs(file: File) {
-    this.papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      dynamicTyping: true,
-      complete: (results, file) => {
-          console.log('Parsed: ', results, file);
+
+    console.log(file);
+    let reader = new FileReader();
+    
+    reader.onloadend = (e) => {
+      let count = 0;
+      let data = jsyaml.safeLoad(reader.result) as Song[];
+      for(let i=0; i < data.length; i++) {
+        let song = data[i];
+        this.saveSong(song);
+        count++;
       }
-    } as PapaParseConfig);
+      console.log(count + " songs imported")
+    };
+    reader.readAsText(file);
   }
 
   exportSongs() : Promise<string> {
     return new Promise((resolve, reject) => {
       let songs = this.songsCollection.valueChanges();
       songs.subscribe( (songsList) => {
-        resolve(this.papa.unparse(songsList, {
-          header: true,
-        } as PapaParseConfig));
+        resolve(jsyaml.safeDump(songsList));
       });
     });
-
   }
 
   importSongsFromHtml(file: File) {

@@ -10,6 +10,7 @@
 <ion-content padding>
   <h3>Songs to go</h3>
 
+  <h4>Login</h4>
   <p *ngIf="authService.isAuthenticated()">Logged in as {{ authService.getUserInfo() }} </p>
 
   <button ion-button googleLogin *ngIf="!authService.isAuthenticated()" (click)="authService.loginGoogle()">Google Login</button>
@@ -17,11 +18,14 @@
   <button ion-button fbLogin *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Logout</button>
 
   <div *ngIf="authService.isAuthenticated()">
-    <p>Import</p>
-    <input ion-button type="file" (change)="fileChange($event)" placeholder="Upload csv file" accept=".csv">
-    <input type="file" (change)="fileChangeHtml($event)" placeholder="Upload html file" accept=".htm,.html">
+    <h4>Data management</h4>
 
+    <button ion-button (click)="onImportClick()">Import Songs</button>
+    <button ion-button (click)="onImportHtmlClick()">Import Songs HTML</button>
     <button ion-button export  (click)="exportSongs($event)">Export Songs</button>
+        
+    <input type="file" (change)="fileChange($event)" class="file-input" style="opacity: 0" accept=".yaml" #fileInp />
+    <input type="file" (change)="fileChangeHtml($event)" class="file-input" style="opacity: 0" accept=".htm,.html" #fileHtmlInp />
   </div>
-
+  
 </ion-content>
