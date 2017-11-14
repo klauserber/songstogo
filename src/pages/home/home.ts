@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController } from 'ionic-angular';
 
 import { AuthService } from '../../app/auth.service';
 
@@ -20,7 +20,7 @@ export class HomePage {
   @ViewChild('fileHtmlInp') fileHtmlInput: ElementRef;
 
   constructor(public navCtrl: NavController, public authService: AuthService, private dataService: DataService,
-      private alertCtrl: AlertController) {
+      private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
   }
 
   fileChange(e) {
@@ -62,7 +62,14 @@ export class HomePage {
         {
           text: 'Yes',
           handler: () => {
-            this.dataService.removeAllSongs();
+            let loading = this.loadingCtrl.create({
+              content: 'Removing songs...'
+            });          
+            loading.present();            
+          
+            this.dataService.removeAllSongs().then((count) => {
+              loading.dismiss();
+            });
           }
         }
       ]

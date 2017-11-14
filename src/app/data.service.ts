@@ -83,15 +83,29 @@ export class DataService {
     this.songsCollection.doc(id).delete();
   }
 
-  removeAllSongs() {
-    this.afs.firestore.runTransaction((trans) => {
-      return new Promise((resolve, reject) => {
+
+  removeAllSongs() : Promise<number> {
+    return new Promise((resolve, reject) => {
+      let batch = this.afs.firestore.batch();
+        let count = this.songsList.length;
+
         this.songsList.forEach((song) => {
-          trans.delete(this.songsCollection.doc(song.id).ref);
+          batch.delete(this.songsCollection.doc(song.id).ref);
+          //console.log("song '" + song.title + "' removed");
         });
-      });
+    
+        // Commit the batch
+        batch.commit().then(() => {
+          console.log("batch committed, " + count + " songs remved");
+          resolve(count);
+        }).catch((err) => {
+          reject(err);
+        });    
     });
+    
   }
+
+
 
   importSongs(file: File) {
 
