@@ -18,14 +18,16 @@
   <button ion-button fbLogin *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Logout</button>
 
   <div *ngIf="authService.isAuthenticated()">
-    <h4>Data management</h4>
+    <h4 style="padding-top: 20px">Data management</h4>
 
-    <button ion-button (click)="onImportClick()">Import Songs</button>
-    <button ion-button (click)="onImportHtmlClick()">Import Songs HTML</button>
-    <button ion-button export  (click)="exportSongs($event)">Export Songs</button>
-        
+    <button ion-button (click)="onImportClick()">Import songs</button>
+    <button ion-button (click)="onImportHtmlClick()">Import songs HTML</button>
+    <br />
+    <button ion-button export  (click)="exportSongs($event)">Export songs</button>
+    <button ion-button export  (click)="showRemoveSongsConfirm($event)">Remove all songs</button>
+
     <input type="file" (change)="fileChange($event)" class="file-input" style="opacity: 0" accept=".yaml" #fileInp />
     <input type="file" (change)="fileChangeHtml($event)" class="file-input" style="opacity: 0" accept=".htm,.html" #fileHtmlInp />
   </div>
-  
+
 </ion-content>

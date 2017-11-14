@@ -2,7 +2,7 @@ import { Song, StgUser } from './data.service';
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
+//import { Observable } from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
 //import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
@@ -30,7 +30,6 @@ export interface Song {
 
 @Injectable()
 export class DataService {
-  songs: Observable<Song[]>;
   songsList: Song[];
 
   private songsCollection: AngularFirestoreCollection<Song>;
@@ -59,7 +58,7 @@ export class DataService {
     else {
       this.userDoc = null;
       this.stgUser = null;
-      this.songs = null;
+      this.songsList = null;
       this.songsCollection = null;
     }
 
@@ -68,7 +67,9 @@ export class DataService {
   initSongsCollection() {
     this.songsCollection = this.userDoc.collection<Song>("/songs", ref => ref.orderBy("title"));
 
-    this.songs = this.songsCollection.valueChanges();
+    this.songsCollection.valueChanges().subscribe((songs) => {
+      this.songsList = songs;
+    });
   }
 
   saveSong(song: Song) {
@@ -82,11 +83,21 @@ export class DataService {
     this.songsCollection.doc(id).delete();
   }
 
+  removeAllSongs() {
+    this.afs.firestore.runTransaction((trans) => {
+      return new Promise((resolve, reject) => {
+        this.songsList.forEach((song) => {
+          trans.delete(this.songsCollection.doc(song.id).ref);
+        });
+      });
+    });
+  }
+
   importSongs(file: File) {
 
     console.log(file);
     let reader = new FileReader();
-    
+
     reader.onloadend = (e) => {
       let count = 0;
       let data = jsyaml.safeLoad(reader.result) as Song[];
@@ -102,10 +113,7 @@ export class DataService {
 
   exportSongs() : Promise<string> {
     return new Promise((resolve, reject) => {
-      let songs = this.songsCollection.valueChanges();
-      songs.subscribe( (songsList) => {
-        resolve(jsyaml.safeDump(songsList));
-      });
+      resolve(jsyaml.safeDump(this.songsList));
     });
   }
 

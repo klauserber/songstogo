@@ -18,7 +18,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let song of dataService.songs | async " (click)="songTapped($event, song)">
+    <ion-item *ngFor="let song of dataService.songsList " (click)="songTapped($event, song)">
       {{song.title}}
       <ion-icon name="trash" item-end (click)="showRemoveConfirm($event, song)" style="padding-right: 30px"></ion-icon>
     </ion-item>

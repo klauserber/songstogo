@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 
 import { AuthService } from '../../app/auth.service';
 
@@ -19,7 +19,8 @@ export class HomePage {
   @ViewChild('fileInp') fileInput: ElementRef;
   @ViewChild('fileHtmlInp') fileHtmlInput: ElementRef;
 
-  constructor(public navCtrl: NavController, public authService: AuthService, private dataService: DataService) {
+  constructor(public navCtrl: NavController, public authService: AuthService, private dataService: DataService,
+      private alertCtrl: AlertController) {
   }
 
   fileChange(e) {
@@ -44,6 +45,29 @@ export class HomePage {
       let file = new Blob([ data ], { type: 'text/yaml;charset=utf-8' });
       fileSaver.saveAs(file, "songs.yaml");
     });
+  }
+
+  showRemoveSongsConfirm(event) {
+    event.stopPropagation();
+    let confirm = this.alertCtrl.create({
+      title: "Remove all Songs",
+      message: 'Do you want to Remove all songs?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.dataService.removeAllSongs();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 }
