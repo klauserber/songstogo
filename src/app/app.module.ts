@@ -4,7 +4,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { SongsPage } from '../pages/songs/songs';
 import { SongviewPage } from './../pages/songview/songview';
 import { SongeditPage } from './../pages/songedit/songedit';
@@ -40,7 +39,6 @@ var firebaseconfig = {
   declarations: [
     MyApp,
     HomePage,
-    ListPage,
     SongsPage,
     SongviewPage,
     SongeditPage
@@ -58,7 +56,6 @@ var firebaseconfig = {
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage,
     SongsPage,
     SongviewPage,
     SongeditPage
