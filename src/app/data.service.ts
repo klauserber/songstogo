@@ -30,7 +30,7 @@ export interface Song {
 
 @Injectable()
 export class DataService {
-  songsList: Song[];
+  songs: Song[];
 
   private songsCollection: AngularFirestoreCollection<Song>;
   private userDoc: AngularFirestoreDocument<StgUser>;
@@ -58,7 +58,7 @@ export class DataService {
     else {
       this.userDoc = null;
       this.stgUser = null;
-      this.songsList = null;
+      this.songs = null;
       this.songsCollection = null;
     }
 
@@ -68,7 +68,7 @@ export class DataService {
     this.songsCollection = this.userDoc.collection<Song>("/songs", ref => ref.orderBy("title"));
 
     this.songsCollection.valueChanges().subscribe((songs) => {
-      this.songsList = songs;
+      this.songs = songs;
     });
   }
 
@@ -91,11 +91,10 @@ export class DataService {
   removeAllSongs() : Promise<number> {
     return new Promise((resolve, reject) => {
       let batch = this.afs.firestore.batch();
-        let count = this.songsList.length;
+        let count = this.songs.length;
 
-        this.songsList.forEach((song) => {
+        this.songs.forEach((song) => {
           batch.delete(this.songsCollection.doc(song.id).ref);
-          //console.log("song '" + song.title + "' removed");
         });
     
         // Commit the batch
@@ -131,7 +130,7 @@ export class DataService {
 
   exportSongs() : Promise<string> {
     return new Promise((resolve, reject) => {
-      resolve(jsyaml.safeDump(this.songsList));
+      resolve(jsyaml.safeDump(this.songs));
     });
   }
 
@@ -150,6 +149,8 @@ export class DataService {
   }
 
   /*
+  Import from Setlisthelper HTML-Format
+
   cells:
        0 Name
        1 GenreName
@@ -168,9 +169,7 @@ export class DataService {
 
     for(let r=0; r<rows.length; r++) {
       let row = rows[r];
-      //console.log("row " + r);
       let cells = row.cells;
-      //console.log(moment.duration("03:32").asSeconds());
 
       let song = {
         title: cells[0].innerHTML,
