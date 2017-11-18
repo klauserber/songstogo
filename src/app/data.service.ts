@@ -2,7 +2,7 @@ import { Song, StgUser } from './data.service';
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-//import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
 //import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
@@ -81,6 +81,10 @@ export class DataService {
 
   removeSong(id: string) {
     this.songsCollection.doc(id).delete();
+  }
+
+  findSongById(id: string) {
+    return this.songsCollection.doc(id).valueChanges() as Observable<Song>;
   }
 
 

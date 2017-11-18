@@ -1,4 +1,4 @@
-import { Song } from './../../app/data.service';
+import { Song, DataService } from './../../app/data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SongeditPage } from '../songedit/songedit';
@@ -18,12 +18,21 @@ export class SongviewPage {
 
   public song: Song;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.song = navParams.get("song");
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService) {
+    let id = navParams.get("songid");
+
+    this.dataService.findSongById(id).subscribe((song) => {
+      this.song = song;
+    });
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SongviewPage');
+  }
+
+  getSong() {
+    return this.dataService.findSongById(this.song.id);
   }
 
   songEditTapped(event) {

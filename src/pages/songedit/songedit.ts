@@ -20,7 +20,6 @@ export class SongeditPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private data: DataService) {
     this.song = navParams.get("song");
-    console.log(this.song);
   }
 
   ionViewDidLoad() {

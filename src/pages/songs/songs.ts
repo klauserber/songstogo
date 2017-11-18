@@ -28,7 +28,7 @@ export class SongsPage {
 
   songTapped(event, song: Song) {
     this.navCtrl.push(SongviewPage, {
-      song: song
+      songid: song.id
     });
   }
 
