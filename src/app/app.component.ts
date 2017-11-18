@@ -1,3 +1,4 @@
+import { SetlistsPage } from './../pages/setlists/setlists';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -22,7 +23,8 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'Songs', component: SongsPage }
+      { title: 'Songs', component: SongsPage },
+      { title: 'Setlists', component: SetlistsPage }
     ];
 
   }

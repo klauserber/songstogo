@@ -1,4 +1,4 @@
-import { Song, StgUser } from './data.service';
+import { Song, StgUser, SetList } from './data.service';
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
@@ -27,12 +27,20 @@ export interface Song {
   tempo: number;
   length: number;
 }
+export interface SetList {
+  id: string;
+  title: string;
+  date: number;
+  songids: string[];
+}
 
 @Injectable()
 export class DataService {
+  setLists: SetList[];
   songs: Song[];
 
   private songsCollection: AngularFirestoreCollection<Song>;
+  private setListsCollection: AngularFirestoreCollection<SetList>;
   private userDoc: AngularFirestoreDocument<StgUser>;
   private stgUser: StgUser;
 
@@ -42,8 +50,6 @@ export class DataService {
 
   initUserDoc(user: firebase.User) {
     if(user !== null) {
-      //this.userDoc = this.afs.doc("users/" + user.uid);
-      //AngularFireObject<StgUser>;
       this.userDoc =  this.afs.doc<StgUser>("users/" +  user.uid);
       this.stgUser = {
         id: user.uid,
@@ -54,6 +60,7 @@ export class DataService {
       this.userDoc.set(this.stgUser);
 
       this.initSongsCollection();
+      this.initSetListsCollection();
     }
     else {
       this.userDoc = null;
@@ -72,6 +79,14 @@ export class DataService {
     });
   }
 
+  initSetListsCollection() {
+    this.setListsCollection = this.userDoc.collection<SetList>("/setlists", ref => ref.orderBy("date", "desc"));
+
+    this.setListsCollection.valueChanges().subscribe((setLists) => {
+      this.setLists = setLists;
+    });
+  }
+
   saveSong(song: Song) {
     if(song.id === undefined || song.id === null) {
       song.id = this.afs.createId();
@@ -79,12 +94,27 @@ export class DataService {
     this.songsCollection.doc(song.id).set(song);
   }
 
+  saveSetList(setList: SetList) {
+    if(setList.id === undefined || setList.id === null) {
+      setList.id = this.afs.createId();
+    }
+    this.setListsCollection.doc(setList.id).set(setList);
+  }
+
   removeSong(id: string) {
     this.songsCollection.doc(id).delete();
   }
 
+  removeSetList(id: string) {
+    this.setListsCollection.doc(id).delete();
+  }
+
   findSongById(id: string) {
     return this.songsCollection.doc(id).valueChanges() as Observable<Song>;
+  }
+
+  findSetListById(id: string) {
+    return this.setListsCollection.doc(id).valueChanges() as Observable<SetList>;
   }
 
 
@@ -108,6 +138,24 @@ export class DataService {
     
   }
 
+  removeAllSetLists() : Promise<number> {
+    return new Promise((resolve, reject) => {
+      let batch = this.afs.firestore.batch();
+        let count = this.setLists.length;
+
+        this.setLists.forEach((setList) => {
+          batch.delete(this.songsCollection.doc(setList.id).ref);
+        });
+    
+        // Commit the batch
+        batch.commit().then(() => {
+          console.log("batch committed, " + count + " setLists remved");
+          resolve(count);
+        }).catch((err) => {
+          reject(err);
+        });    
+    });
+  }
 
 
   importSongs(file: File) {
@@ -134,6 +182,9 @@ export class DataService {
     });
   }
 
+  /*
+  Import from Setlisthelper HTML-Format
+  */
   importSongsFromHtml(file: File) {
     let parser = new DOMParser();
 
