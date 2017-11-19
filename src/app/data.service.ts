@@ -91,22 +91,22 @@ export class DataService {
     if(song.id === undefined || song.id === null) {
       song.id = this.afs.createId();
     }
-    this.songsCollection.doc(song.id).set(song);
+    return this.songsCollection.doc(song.id).set(song);
   }
 
   saveSetList(setList: SetList) {
     if(setList.id === undefined || setList.id === null) {
       setList.id = this.afs.createId();
     }
-    this.setListsCollection.doc(setList.id).set(setList);
+    return this.setListsCollection.doc(setList.id).set(setList);
   }
 
   removeSong(id: string) {
-    this.songsCollection.doc(id).delete();
+    return this.songsCollection.doc(id).delete();
   }
 
   removeSetList(id: string) {
-    this.setListsCollection.doc(id).delete();
+    return this.setListsCollection.doc(id).delete();
   }
 
   findSongById(id: string) {
@@ -129,7 +129,7 @@ export class DataService {
     
         // Commit the batch
         batch.commit().then(() => {
-          console.log("batch committed, " + count + " songs remved");
+          console.log("batch committed, " + count + " songs removed");
           resolve(count);
         }).catch((err) => {
           reject(err);
@@ -160,20 +160,24 @@ export class DataService {
 
   importSongs(file: File) {
 
-    console.log(file);
-    let reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+      reader.onloadend = (e) => {
+        let data = jsyaml.safeLoad(reader.result) as Song[];
+        let savePromisses = [];
+        for(let i=0; i < data.length; i++) {
+          let song = data[i];
+          savePromisses.push(this.saveSong(song));
+        }
+        Promise.all(savePromisses).then(() => {
+          resolve(savePromisses.length);
+        }).catch((err) => {
+          reject(err);        
+        });
+      };
+      reader.readAsText(file);
+    });
 
-    reader.onloadend = (e) => {
-      let count = 0;
-      let data = jsyaml.safeLoad(reader.result) as Song[];
-      for(let i=0; i < data.length; i++) {
-        let song = data[i];
-        this.saveSong(song);
-        count++;
-      }
-      console.log(count + " songs imported")
-    };
-    reader.readAsText(file);
   }
 
   exportSongs() : Promise<string> {

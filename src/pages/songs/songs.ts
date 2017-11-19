@@ -1,3 +1,4 @@
+import { ToastController } from 'ionic-angular/components/toast/toast-controller';
 import { SongeditPage } from './../songedit/songedit';
 import { SongviewPage } from './../songview/songview';
 import { DataService, Song } from './../../app/data.service';
@@ -19,7 +20,8 @@ import { AlertController } from 'ionic-angular';
 export class SongsPage {
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService, 
+    private alertCtrl: AlertController, private toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -53,7 +55,27 @@ export class SongsPage {
         {
           text: 'Yes',
           handler: () => {
-            this.dataService.removeSong(song.id);
+            this.dataService.removeSong(song.id).then(() => {
+              let toast = this.toastCtrl.create({
+                message: 'Song "' + song.title + '" removed',
+                duration: 3000,
+                cssClass: 'success',
+                position: 'top'
+              });  
+              toast.present();      
+
+            }).catch((err) => {
+              let msg = "Remove song failed";
+              console.log(msg, err);
+              let toast = this.toastCtrl.create({
+                message: msg,
+                duration: 3000,
+                cssClass: 'error',
+                position: 'top'
+              });  
+              toast.present();      
+                      
+            });
           }
         }
       ]

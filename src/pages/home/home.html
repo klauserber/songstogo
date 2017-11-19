@@ -20,14 +20,14 @@
   <div *ngIf="authService.isAuthenticated()">
     <h4 style="padding-top: 20px">Data management</h4>
 
-    <button ion-button (click)="onImportClick()">Import songs</button>
-    <button ion-button (click)="onImportHtmlClick()">Import songs HTML</button>
+    <button ion-button (click)="onYamlImportClick()">Import songs</button>
+    <button ion-button (click)="onHtmlImportClick()">Import songs HTML</button>
     <br />
     <button ion-button export  (click)="exportSongs($event)">Export songs</button>
     <button ion-button export  (click)="showRemoveSongsConfirm($event)">Remove all songs</button>
 
-    <input type="file" (change)="fileChange($event)" class="file-input" style="opacity: 0" accept=".yaml" #fileInp />
-    <input type="file" (change)="fileChangeHtml($event)" class="file-input" style="opacity: 0" accept=".htm,.html" #fileHtmlInp />
+    <input type="file" (change)="onYamlImport($event)" class="file-input" style="opacity: 0" accept=".yaml" #fileInp />
+    <input type="file" (change)="onHtmlImport($event)" class="file-input" style="opacity: 0" accept=".htm,.html" #fileHtmlInp />
   </div>
 
 </ion-content>
