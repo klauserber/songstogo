@@ -1,6 +1,7 @@
 import { Song, DataService } from './../../app/data.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { FeedbackController } from '../../app/feedback.controller';
 
 /**
  * Generated class for the SongeditPage page.
@@ -18,7 +19,8 @@ export class SongeditPage {
 
   public song: Song;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private data: DataService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private data: DataService,
+      private feedbackCtrl: FeedbackController) {
     this.song = navParams.get("song");
   }
 
@@ -26,8 +28,21 @@ export class SongeditPage {
     console.log('ionViewDidLoad SongeditPage');
   }
 
-  songSaveTapped(event) {
-    this.data.saveSong(this.song);
-    this.navCtrl.pop();
+  async songSaveTapped(event) {
+    try {
+      await this.data.saveSong(this.song);
+      this.feedbackCtrl.successFeedback("Song saved");
+      this.navCtrl.pop();
+    }
+    catch (error) {
+      this.feedbackCtrl.errorFeedback("Save error", error);
+    }
+
+    /*this.data.saveSong(this.song).then(() => {
+      this.feedbackCtrl.successFeedback("Song saved");
+      this.navCtrl.pop();
+    }).catch((err) => {
+      this.feedbackCtrl.errorFeedback("Save error", err);
+    });*/
   }
 }

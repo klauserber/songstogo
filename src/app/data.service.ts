@@ -87,25 +87,29 @@ export class DataService {
     });
   }
 
-  saveSong(song: Song) {
+  async saveSong(song: Song) {
     if(song.id === undefined || song.id === null) {
       song.id = this.afs.createId();
     }
     return this.songsCollection.doc(song.id).set(song);
+
+    // Test Errors ...
+    //return new Promise((res, rej) => rej("just failed"));
+    //throw new Error("failed!");
   }
 
-  saveSetList(setList: SetList) {
+  async saveSetList(setList: SetList) {
     if(setList.id === undefined || setList.id === null) {
       setList.id = this.afs.createId();
     }
     return this.setListsCollection.doc(setList.id).set(setList);
   }
 
-  removeSong(id: string) {
+  async removeSong(id: string) {
     return this.songsCollection.doc(id).delete();
   }
 
-  removeSetList(id: string) {
+  async removeSetList(id: string) {
     return this.setListsCollection.doc(id).delete();
   }
 
@@ -117,49 +121,71 @@ export class DataService {
     return this.setListsCollection.doc(id).valueChanges() as Observable<SetList>;
   }
 
+  async removeAllSongs() {
+    let batch = this.afs.firestore.batch();
+    let count = this.songs.length;
 
-  removeAllSongs() : Promise<number> {
-    return new Promise((resolve, reject) => {
+    this.songs.forEach((song) => {
+      batch.delete(this.songsCollection.doc(song.id).ref);
+    });
+
+    // Commit the batch
+    await batch.commit();
+    console.log("batch committed, " + count + " songs removed");
+    return count;
+
+    /*return new Promise((resolve, reject) => {
       let batch = this.afs.firestore.batch();
         let count = this.songs.length;
 
         this.songs.forEach((song) => {
           batch.delete(this.songsCollection.doc(song.id).ref);
         });
-    
+
         // Commit the batch
         batch.commit().then(() => {
           console.log("batch committed, " + count + " songs removed");
           resolve(count);
         }).catch((err) => {
           reject(err);
-        });    
-    });
-    
+        });
+    });*/
+
   }
 
-  removeAllSetLists() : Promise<number> {
-    return new Promise((resolve, reject) => {
+  async removeAllSetLists() {
+    let batch = this.afs.firestore.batch();
+    let count = this.setLists.length;
+
+    this.setLists.forEach((setList) => {
+      batch.delete(this.songsCollection.doc(setList.id).ref);
+    });
+
+    // Commit the batch
+    await batch.commit();
+    console.log("batch committed, " + count + " setLists remved");
+    return count;
+
+    /* return new Promise((resolve, reject) => {
       let batch = this.afs.firestore.batch();
         let count = this.setLists.length;
 
         this.setLists.forEach((setList) => {
           batch.delete(this.songsCollection.doc(setList.id).ref);
         });
-    
+
         // Commit the batch
         batch.commit().then(() => {
           console.log("batch committed, " + count + " setLists remved");
           resolve(count);
         }).catch((err) => {
           reject(err);
-        });    
-    });
+        });
+    });*/
   }
 
 
-  importSongs(file: File) {
-
+  async importSongs(file: File) {
     return new Promise((resolve, reject) => {
       let reader = new FileReader();
       reader.onloadend = (e) => {
@@ -172,7 +198,7 @@ export class DataService {
         Promise.all(savePromisses).then(() => {
           resolve(savePromisses.length);
         }).catch((err) => {
-          reject(err);        
+          reject(err);
         });
       };
       reader.readAsText(file);
@@ -180,26 +206,27 @@ export class DataService {
 
   }
 
-  exportSongs() : Promise<string> {
-    return new Promise((resolve, reject) => {
-      resolve(jsyaml.safeDump(this.songs));
-    });
+  async exportSongs() {
+    return jsyaml.safeDump(this.songs);
   }
 
   /*
   Import from Setlisthelper HTML-Format
   */
-  importSongsFromHtml(file: File) {
-    let parser = new DOMParser();
+  async importSongsFromHtml(file: File) {
+    return new Promise((resolve, reject) => {
+      let parser = new DOMParser();
 
-    let reader = new FileReader();
+          let reader = new FileReader();
 
-    reader.onloadend = (e) => {
-      let doc = parser.parseFromString(reader.result, "text/html");
-      console.log(doc);
-      this.imoprtSongsFromDoc(doc);
-    };
-    reader.readAsText(file);
+          reader.onloadend = async (e) => {
+            let doc = parser.parseFromString(reader.result, "text/html");
+            console.log(doc);
+            let count = await this.imoprtSongsFromDoc(doc);
+            resolve(count);
+          };
+          reader.readAsText(file);
+    });
 
   }
 
@@ -217,7 +244,7 @@ export class DataService {
        7 SongLength
        8 Other
   */
-  imoprtSongsFromDoc(doc: Document) : number {
+  async imoprtSongsFromDoc(doc: Document) {
     let rows = doc.getElementsByTagName("tr");
 
     let count = 0;
@@ -236,7 +263,7 @@ export class DataService {
       } as Song;
 
       console.log(song);
-      this.saveSong(song);
+      await this.saveSong(song);
       count++;
     }
     return count;

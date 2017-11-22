@@ -6,7 +6,7 @@ import { AuthService } from '../../app/auth.service';
 import { DataService } from '../../app/data.service';
 
 import * as fileSaver from 'file-saver';
-import { ToastController } from 'ionic-angular/components/toast/toast-controller';
+import { FeedbackController } from '../../app/feedback.controller';
 
 
 
@@ -21,36 +21,24 @@ export class HomePage {
   @ViewChild('fileHtmlInp') fileHtmlInput: ElementRef;
 
   constructor(public navCtrl: NavController, public authService: AuthService, private dataService: DataService,
-      private alertCtrl: AlertController, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+      private alertCtrl: AlertController, private loadingCtrl: LoadingController, private feedbackCtrl: FeedbackController) {
   }
 
-  onYamlImport(e) {
+  async onYamlImport(e) {
     let loading = this.loadingCtrl.create({
       content: 'Importing songs...'
-    });          
-    loading.present();            
-    let fileList: FileList = e.target.files;
-    this.dataService.importSongs(fileList[0]).then((count) => {
-      loading.dismiss();            
-      let toast = this.toastCtrl.create({
-        message: count + ' Songs successfully imported.',
-        duration: 3000,
-        cssClass: 'success',
-        position: 'top'
-      });
-      toast.present();
-    }).catch((err) => {
-      loading.dismiss();            
-      let msg = "Songimport failed";
-      console.log(msg, err);
-      let toast = this.toastCtrl.create({
-        message: msg,
-        duration: 3000,
-        cssClass: 'error',
-        position: 'top'
-      });  
-      toast.present();      
     });
+    loading.present();
+
+    let fileList: FileList = e.target.files;
+    try {
+      let count = await this.dataService.importSongs(fileList[0]);
+      this.feedbackCtrl.successFeedback(count + ' Songs successfully imported.');
+    } catch (error) {
+      this.feedbackCtrl.errorFeedback("Songimport failed", error);
+    } finally {
+      loading.dismiss();
+    }
   }
 
   onYamlImportClick() {
@@ -69,23 +57,9 @@ export class HomePage {
     this.dataService.exportSongs().then( (data) => {
       let file = new Blob([ data ], { type: 'text/yaml;charset=utf-8' });
       fileSaver.saveAs(file, "songs.yaml");
-      let toast = this.toastCtrl.create({
-        message: 'Songs exported.',
-        duration: 3000,
-        cssClass: 'success',
-        position: 'top'
-      });  
-      toast.present();
+      this.feedbackCtrl.successFeedback('Songs exported.');
     }).catch((err) => {
-      let msg = "Songexport failed";
-      console.log(msg, err);
-      let toast = this.toastCtrl.create({
-        message: msg,
-        duration: 3000,
-        cssClass: 'error',
-        position: 'top'
-      });  
-      toast.present();      
+      this.feedbackCtrl.errorFeedback("Songexport failed", err);
     });
   }
 
@@ -106,29 +80,15 @@ export class HomePage {
           handler: () => {
             let loading = this.loadingCtrl.create({
               content: 'Removing songs...'
-            });          
-            loading.present();            
-          
+            });
+            loading.present();
+
             this.dataService.removeAllSongs().then((count) => {
               loading.dismiss();
-              let toast = this.toastCtrl.create({
-                message: count + ' Songs removed.',
-                duration: 3000,
-                cssClass: 'success',
-                position: 'top'
-              });  
-              toast.present();
+              this.feedbackCtrl.successFeedback(count + ' Songs removed.');
             }).catch((err) => {
-              let msg = "Failed to remove all songs";
-              console.log(msg, err);
-              let toast = this.toastCtrl.create({
-                message: msg,
-                duration: 3000,
-                cssClass: 'error',
-                position: 'top'
-              });  
-              toast.present();      
-        
+              loading.dismiss();
+              this.feedbackCtrl.errorFeedback("Failed to remove all songs", err);
             });
           }
         }

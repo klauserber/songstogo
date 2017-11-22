@@ -2,6 +2,7 @@ import { Song, DataService } from './../../app/data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SongeditPage } from '../songedit/songedit';
+import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 /**
  * Generated class for the SongviewPage page.
@@ -14,25 +15,32 @@ import { SongeditPage } from '../songedit/songedit';
   selector: 'page-songview',
   templateUrl: 'songview.html',
 })
-export class SongviewPage {
+export class SongviewPage implements OnInit {
 
   public song: Song;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService) {
-    let id = navParams.get("songid");
+  ngOnInit(): void {
+    this.initSong();
+  }
 
-    this.dataService.findSongById(id).subscribe((song) => {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService) {
+
+  }
+
+  async initSong() {
+    let id = this.navParams.get("songid");
+    let songOb = await this.dataService.findSongById(id);
+
+    songOb.subscribe((song) => {
       this.song = song;
     });
 
   }
 
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad SongviewPage');
-  }
-
-  getSong() {
-    return this.dataService.findSongById(this.song.id);
   }
 
   songEditTapped(event) {

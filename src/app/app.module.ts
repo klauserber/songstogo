@@ -26,6 +26,7 @@ import { PapaParseModule } from 'ngx-papaparse';
 
 import { AuthService } from './auth.service';
 import { DataService } from './data.service';
+import { FeedbackController } from './feedback.controller';
 
 
 
@@ -77,7 +78,8 @@ var firebaseconfig = {
     Facebook,
 
     AuthService,
-    DataService
+    DataService,
+    FeedbackController
   ]
 })
 export class AppModule {}
