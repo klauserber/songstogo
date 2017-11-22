@@ -37,12 +37,5 @@ export class SongeditPage {
     catch (error) {
       this.feedbackCtrl.errorFeedback("Save error", error);
     }
-
-    /*this.data.saveSong(this.song).then(() => {
-      this.feedbackCtrl.successFeedback("Song saved");
-      this.navCtrl.pop();
-    }).catch((err) => {
-      this.feedbackCtrl.errorFeedback("Save error", err);
-    });*/
   }
 }

@@ -1,4 +1,4 @@
-import { ToastController } from 'ionic-angular/components/toast/toast-controller';
+import { FeedbackController } from './../../app/feedback.controller';
 import { SongeditPage } from './../songedit/songedit';
 import { SongviewPage } from './../songview/songview';
 import { DataService, Song } from './../../app/data.service';
@@ -6,12 +6,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 
-/**
- * Generated class for the SongsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @Component({
   selector: 'page-songs',
@@ -21,7 +15,7 @@ export class SongsPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService, 
-    private alertCtrl: AlertController, private toastCtrl: ToastController) {
+    private alertCtrl: AlertController, private feedbackCtrl: FeedbackController) {
   }
 
   ionViewDidLoad() {
@@ -54,28 +48,13 @@ export class SongsPage {
         },
         {
           text: 'Yes',
-          handler: () => {
-            this.dataService.removeSong(song.id).then(() => {
-              let toast = this.toastCtrl.create({
-                message: 'Song "' + song.title + '" removed',
-                duration: 3000,
-                cssClass: 'success',
-                position: 'top'
-              });  
-              toast.present();      
-
-            }).catch((err) => {
-              let msg = "Remove song failed";
-              console.log(msg, err);
-              let toast = this.toastCtrl.create({
-                message: msg,
-                duration: 3000,
-                cssClass: 'error',
-                position: 'top'
-              });  
-              toast.present();      
-                      
-            });
+          handler: async () => {
+            try {
+              await this.dataService.removeSong(song.id);
+              this.feedbackCtrl.successFeedback('Song "' + song.title + '" removed');
+            } catch (error) {
+              this.feedbackCtrl.errorFeedback("Remove song failed", error);
+            }
           }
         }
       ]

@@ -45,22 +45,34 @@ export class HomePage {
     this.fileInput.nativeElement.click();
   }
 
-  onHtmlImport(e) {
+  async onHtmlImport(e) {
     let fileList: FileList = e.target.files;
-    this.dataService.importSongsFromHtml(fileList[0]);
+    let loading = this.loadingCtrl.create({
+      content: 'Removing songs...'
+    });
+    loading.present();
+    try {
+      let count = await this.dataService.importSongsFromHtml(fileList[0]);
+      this.feedbackCtrl.successFeedback(count + " songs successfully importet");
+    } catch (error) {
+      this.feedbackCtrl.errorFeedback("import failed", error)      
+    } finally {
+      loading.dismiss();
+    }
   }
   onHtmlImportClick() {
     this.fileHtmlInput.nativeElement.click();
   }
 
-  exportSongs() {
-    this.dataService.exportSongs().then( (data) => {
+  async exportSongs() {
+    try {
+      let data = await this.dataService.exportSongs();
       let file = new Blob([ data ], { type: 'text/yaml;charset=utf-8' });
       fileSaver.saveAs(file, "songs.yaml");
       this.feedbackCtrl.successFeedback('Songs exported.');
-    }).catch((err) => {
-      this.feedbackCtrl.errorFeedback("Songexport failed", err);
-    });
+    } catch (error) {
+      this.feedbackCtrl.errorFeedback("Songexport failed", error);
+    }
   }
 
   showRemoveSongsConfirm(event) {
@@ -77,19 +89,20 @@ export class HomePage {
         },
         {
           text: 'Yes',
-          handler: () => {
+          handler: async () => {
             let loading = this.loadingCtrl.create({
               content: 'Removing songs...'
             });
             loading.present();
 
-            this.dataService.removeAllSongs().then((count) => {
-              loading.dismiss();
-              this.feedbackCtrl.successFeedback(count + ' Songs removed.');
-            }).catch((err) => {
-              loading.dismiss();
-              this.feedbackCtrl.errorFeedback("Failed to remove all songs", err);
-            });
+            try {
+              let count = await this.dataService.removeAllSongs();
+              this.feedbackCtrl.successFeedback(count + ' Songs removed.');              
+            } catch (error) {
+              this.feedbackCtrl.errorFeedback("Failed to remove all songs", error);              
+            } finally {
+              loading.dismiss();              
+            }
           }
         }
       ]
