@@ -1,5 +1,5 @@
 <!--
-  Generated template for the SetlistviewPage page.
+  Generated template for the SetListviewPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -10,12 +10,18 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Setlist: </ion-title>
+    <ion-title>SetList: {{ setList?.title }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+  <ion-fab right top>
+    <button ion-fab (click)="setListEditTapped($event)">
+      <ion-icon name="create"></ion-icon>
+    </button>
+  </ion-fab>
 
 </ion-content>

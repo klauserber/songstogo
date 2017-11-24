@@ -1,4 +1,4 @@
-import { SetlistsPage } from './../pages/setlists/setlists';
+import { SetListsPage } from './../pages/setlists/setlists';
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -24,7 +24,7 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'Songs', component: SongsPage },
-      { title: 'Setlists', component: SetlistsPage }
+      { title: 'SetLists', component: SetListsPage }
     ];
 
   }

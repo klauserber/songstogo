@@ -1,5 +1,5 @@
-import { SetlistviewPage } from './../pages/setlistview/setlistview';
-import { SetlisteditPage } from './../pages/setlistedit/setlistedit';
+import { SetListviewPage } from './../pages/setlistview/setlistview';
+import { SetListeditPage } from './../pages/setlistedit/setlistedit';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -9,7 +9,7 @@ import { HomePage } from '../pages/home/home';
 import { SongsPage } from '../pages/songs/songs';
 import { SongviewPage } from './../pages/songview/songview';
 import { SongeditPage } from './../pages/songedit/songedit';
-import { SetlistsPage } from './../pages/setlists/setlists';
+import { SetListsPage } from './../pages/setlists/setlists';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -46,9 +46,9 @@ var firebaseconfig = {
     SongsPage,
     SongviewPage,
     SongeditPage,
-    SetlistsPage,
-    SetlisteditPage,
-    SetlistviewPage
+    SetListsPage,
+    SetListeditPage,
+    SetListviewPage
   ],
   imports: [
     BrowserModule,
@@ -66,9 +66,9 @@ var firebaseconfig = {
     SongsPage,
     SongviewPage,
     SongeditPage,
-    SetlistsPage,
-    SetlisteditPage,
-    SetlistviewPage
+    SetListsPage,
+    SetListeditPage,
+    SetListviewPage
   ],
   providers: [
     StatusBar,

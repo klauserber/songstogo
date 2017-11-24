@@ -1,39 +1,39 @@
 import { FeedbackController } from './../../app/feedback.controller';
-import { SetlistviewPage } from './../setlistview/setlistview';
-import { SetlisteditPage } from './../setlistedit/setlistedit';
+import { SetListviewPage } from './../setlistview/setlistview';
+import { SetListeditPage } from './../setlistedit/setlistedit';
 import { DataService, SetList } from './../../app/data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 
 
 @Component({
-  selector: 'page-setlists',
-  templateUrl: 'setlists.html',
+  selector: 'page-setLists',
+  templateUrl: 'setLists.html',
 })
-export class SetlistsPage {
+export class SetListsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService,
     private alertCtrl: AlertController, private feedbackCtrl: FeedbackController) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SetlistsPage');
+    console.log('ionViewDidLoad SetListsPage');
   }
 
   setListTapped(event, setList: SetList) {
-    this.navCtrl.push(SetlistviewPage, {
+    this.navCtrl.push(SetListviewPage, {
       setListid: setList.id
     });
   }
 
   setListNewTapped(event) {
-    this.navCtrl.push(SetlisteditPage);
+    this.navCtrl.push(SetListeditPage);
   }
 
   showRemoveConfirm(event, setList: SetList) {
     event.stopPropagation();
     let confirm = this.alertCtrl.create({
-      title: "Remove Setlist",
+      title: "Remove SetList",
       message: 'Remove "' + setList.title + '"?',
       buttons: [
         {
@@ -47,9 +47,9 @@ export class SetlistsPage {
           handler: async () => {
             try {
               await this.dataService.removeSetList(setList.id);
-              this.feedbackCtrl.successFeedback('Setlist "' + setList.title + '" removed');
+              this.feedbackCtrl.successFeedback('SetList "' + setList.title + '" removed');
             } catch (error) {
-              this.feedbackCtrl.errorFeedback('Failed to remove Setlist "' + setList.title + '"', error);
+              this.feedbackCtrl.errorFeedback('Failed to remove SetList "' + setList.title + '"', error);
             }
           }
         }

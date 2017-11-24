@@ -31,7 +31,13 @@ export interface SetList {
   id: string;
   title: string;
   date: number;
-  songids: string[];
+  setListEntries: SetListEntry[];
+}
+export interface SetListEntry {
+  title: string;
+}
+export interface SetListSongEntry extends SetListEntry {
+  songId: string;
 }
 
 @Injectable()
@@ -133,24 +139,6 @@ export class DataService {
     await batch.commit();
     console.log("batch committed, " + count + " songs removed");
     return count;
-
-    /*return new Promise((resolve, reject) => {
-      let batch = this.afs.firestore.batch();
-        let count = this.songs.length;
-
-        this.songs.forEach((song) => {
-          batch.delete(this.songsCollection.doc(song.id).ref);
-        });
-
-        // Commit the batch
-        batch.commit().then(() => {
-          console.log("batch committed, " + count + " songs removed");
-          resolve(count);
-        }).catch((err) => {
-          reject(err);
-        });
-    });*/
-
   }
 
   async removeAllSetLists() {
@@ -165,23 +153,6 @@ export class DataService {
     await batch.commit();
     console.log("batch committed, " + count + " setLists remved");
     return count;
-
-    /* return new Promise((resolve, reject) => {
-      let batch = this.afs.firestore.batch();
-        let count = this.setLists.length;
-
-        this.setLists.forEach((setList) => {
-          batch.delete(this.songsCollection.doc(setList.id).ref);
-        });
-
-        // Commit the batch
-        batch.commit().then(() => {
-          console.log("batch committed, " + count + " setLists remved");
-          resolve(count);
-        }).catch((err) => {
-          reject(err);
-        });
-    });*/
   }
 
 
@@ -211,7 +182,7 @@ export class DataService {
   }
 
   /*
-  Import from Setlisthelper HTML-Format
+  Import from SetListhelper HTML-Format
   */
   async importSongsFromHtml(file: File) {
     return new Promise((resolve, reject) => {
@@ -231,7 +202,7 @@ export class DataService {
   }
 
   /*
-  Import from Setlisthelper HTML-Format
+  Import from SetListhelper HTML-Format
 
   cells:
        0 Name

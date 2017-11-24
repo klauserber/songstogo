@@ -1,21 +1,23 @@
+import { Observable } from 'rxjs/Observable';
 import { FeedbackController } from './../../app/feedback.controller';
-import { SetList, DataService } from './../../app/data.service';
+import { SetList, DataService, Song } from './../../app/data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 
 @Component({
-  selector: 'page-setlistedit',
-  templateUrl: 'setlistedit.html',
+  selector: 'page-setListedit',
+  templateUrl: 'setListedit.html',
 })
-export class SetlisteditPage {
+export class SetListeditPage {
 
   setList: SetList;
+  songs: Observable<Song[]>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private dataService : DataService,
       private FeedbackCtrl: FeedbackController) {
-    let inp = navParams.get("setList");
-    this.setList = inp !== undefined ? inp : this.getEmpty();
+    let setList = navParams.get("setList");
+    this.setList = setList !== undefined ? setList : this.getEmpty();
   }
 
   getEmpty() {
@@ -23,12 +25,12 @@ export class SetlisteditPage {
       id: null,
       date: 0,
       title: "",
-      songids: []
+      setListEntries: []
     } as SetList;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SetlisteditPage');
+    console.log('ionViewDidLoad SetListeditPage');
   }
 
   async setListSaveTapped(event) {
