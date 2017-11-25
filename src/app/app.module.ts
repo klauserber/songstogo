@@ -1,3 +1,4 @@
+import { SetListService } from './setlist.service';
 import { SetListviewPage } from './../pages/setlistview/setlistview';
 import { SetListeditPage } from './../pages/setlistedit/setlistedit';
 import { BrowserModule } from '@angular/platform-browser';
@@ -79,6 +80,7 @@ var firebaseconfig = {
 
     AuthService,
     DataService,
+    SetListService,
     FeedbackController
   ]
 })

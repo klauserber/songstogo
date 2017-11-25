@@ -34,10 +34,8 @@ export interface SetList {
   setListEntries: SetListEntry[];
 }
 export interface SetListEntry {
-  title: string;
-}
-export interface SetListSongEntry extends SetListEntry {
   songId: string;
+  pauseTitle: string;
 }
 
 @Injectable()
