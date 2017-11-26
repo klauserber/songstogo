@@ -42,6 +42,7 @@ export interface SetListEntry {
 export class DataService {
   setLists: SetList[];
   songs: Song[];
+  songsMap: Map<string, Song> = null;
 
   private songsCollection: AngularFirestoreCollection<Song>;
   private setListsCollection: AngularFirestoreCollection<SetList>;
@@ -80,6 +81,7 @@ export class DataService {
 
     this.songsCollection.valueChanges().subscribe((songs) => {
       this.songs = songs;
+      this.songsMap = null;
     });
   }
 
@@ -89,6 +91,16 @@ export class DataService {
     this.setListsCollection.valueChanges().subscribe((setLists) => {
       this.setLists = setLists;
     });
+  }
+
+  getSongsMap() {
+    if(this.songsMap === null) {
+      this.songsMap = new Map();
+      this.songs.forEach((song) => {
+        this.songsMap.set(song.id, song);
+      });
+    }
+    return this.songsMap;
   }
 
   async saveSong(song: Song) {

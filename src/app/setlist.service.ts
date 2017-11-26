@@ -50,7 +50,7 @@ export class SetListService {
     return setListEntries;
   }
 
-  async createEntriesModel(entries: SetListEntry[]) {
+  createEntriesModel(entries: SetListEntry[]) {
     let entriesModel: SetListEntryModel[] = [];
     console.log("create " + entries.length);
     for(let entry of entries) {
@@ -61,7 +61,7 @@ export class SetListService {
       
       if(entry.songId !== null) {
         entryType = SetListEntryType.SONG;
-        song = await this.dataService.findSongById(entry.songId).take(1).toPromise();
+        song = this.dataService.getSongsMap().get(entry.songId);
         title = song.title;
       }
       //let type = entry.songId != null ? SetListEntryType.SONG : SetListEntryType.PAUSE;
