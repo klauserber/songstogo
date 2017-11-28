@@ -52,6 +52,10 @@ export class SetListeditPage implements OnInit{
     this.navCtrl.pop();
   }
 
+  deleteAll() {
+    this.entries = [];
+  }  
+
   songTapped(event, song: Song) {
     console.log("Song tapped: " + song.title);
     this.entries.push({

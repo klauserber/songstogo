@@ -45,9 +45,17 @@
   
 
   <ion-fab right top>
-    <button ion-fab (click)="setListSaveTapped($event)">
-      <ion-icon name="checkmark"></ion-icon>
+    <button ion-fab>
+      <ion-icon name="arrow-dropdown"></ion-icon>
     </button>
+    <ion-fab-list>
+      <button ion-fab (click)="setListSaveTapped($event)">
+          <ion-icon name="checkmark"></ion-icon>
+      </button>
+      <button ion-fab (click)="deleteAll($event)">
+          <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-fab-list>        
   </ion-fab>
 
 </ion-content>
