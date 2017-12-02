@@ -1,10 +1,9 @@
-import { SetListEntryType, SetListService } from './../../app/setlist.service';
+import { SetListEntryType, SetListService, SetListEntryModel } from './../../app/setlist.service';
 import { Observable } from 'rxjs/Observable';
 import { FeedbackController } from './../../app/feedback.controller';
 import { SetList, DataService, Song } from './../../app/data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { SetListEntryModel } from '../../app/setlist.service';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 
@@ -16,8 +15,9 @@ export class SetListeditPage implements OnInit{
 
   setList: SetList;
   songs: Observable<Song[]>;
-  selectedEntry: number = null;
   entries: SetListEntryModel[] = [];
+  selectedIndex;
+  
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
       private dataService : DataService, private setListService: SetListService,
@@ -56,14 +56,32 @@ export class SetListeditPage implements OnInit{
     this.entries = [];
   }  
 
+  entryTapped(event, entry: SetListEntryModel, index: number) {
+    this.selectedIndex = (index === this.selectedIndex) ? undefined : index;
+  }
+
   songTapped(event, song: Song) {
-    console.log("Song tapped: " + song.title);
-    this.entries.push({
+    let idx = this.selectedIndex !== undefined ? this.selectedIndex : this.entries.length;
+    this.entries.splice(idx, 0, {
       title: song.title,
       songNumber: 0,
       songId: song.id,
       entryType: SetListEntryType.SONG
     });
+    this.entries = this.setListService.reNumber(this.entries);
   }
   
+  entryRemoveTapped(event, entry: SetListEntryModel, index: number) {
+    this.entries.splice(index, 1);
+    this.entries = this.setListService.reNumber(this.entries);
+  }
+
+  entryMoveTapped(event, entry: SetListEntryModel, index: number) {
+    this.entries.splice(index, 1);
+
+    let idx = this.selectedIndex !== undefined ? this.selectedIndex : this.entries.length;
+    this.entries.splice(idx, 0, entry);
+
+    this.entries = this.setListService.reNumber(this.entries);
+  }
 }

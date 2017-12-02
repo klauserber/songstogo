@@ -29,9 +29,9 @@ export class SetListService {
     } as SetList;
   }
 
-  createSetListEntries(entries: SetListEntryModel[]) {
+  createSetListEntries(entriesModel: SetListEntryModel[]) {
     let setListEntries : SetListEntry[] = [];
-    entries.forEach((entry) => {
+    entriesModel.forEach((entry) => {
       switch(entry.entryType) {
         case SetListEntryType.SONG: 
           setListEntries.push({
@@ -72,9 +72,21 @@ export class SetListService {
         entryType: entryType
       });
     }
+    return this.reNumber(entriesModel);
+
+  }
+
+  reNumber(entriesModel: SetListEntryModel[]) {
+
+    let numb = 1;
+    entriesModel.forEach((entry) => {
+      if(SetListEntryType.SONG === entry.entryType) {
+        entry.songNumber = numb++;
+      }
+    });
 
     return entriesModel;
-
+    
   }
 
 
