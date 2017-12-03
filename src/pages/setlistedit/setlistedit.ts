@@ -69,6 +69,7 @@ export class SetListeditPage implements OnInit{
       entryType: SetListEntryType.SONG
     });
     this.entries = this.setListService.reNumber(this.entries);
+    this.scrollToSelected();
   }
   
   entryRemoveTapped(event, entry: SetListEntryModel, index: number) {
@@ -96,5 +97,13 @@ export class SetListeditPage implements OnInit{
     this.entries = this.setListService.reNumber(this.entries);
 
     if(this.selectedIndex < this.entries.length - 1) this.selectedIndex++;
+    this.scrollToSelected();
+  }
+
+  scrollToSelected() {
+    if(this.selectedIndex !== undefined) {
+      let elem = document.getElementById("entry-" + this.selectedIndex);
+      elem.scrollIntoView();
+    }
   }
 }
