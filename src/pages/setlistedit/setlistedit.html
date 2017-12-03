@@ -38,9 +38,9 @@
           <button ion-item *ngFor="let entry of entries; let idx = index" 
              (click)="entryTapped($event, entry, idx)" [ngClass]="selectedIndex === idx ? 'entry-selected' : 'none'">
              {{entry.songNumber}}. {{entry.title}}
-             <ion-icon name="arrow-dropup" item-end *ngIf="dropUpVisible(idx)"
+             <ion-icon name="arrow-dropup" item-end *ngIf="dropUpVisible(idx)" style="padding-right: 20px"
               (click)="entryMoveTapped($event, entry, idx, 'up')"></ion-icon>
-             <ion-icon name="arrow-dropdown" item-end *ngIf="selectedIndex === undefined || idx < selectedIndex" 
+             <ion-icon name="arrow-dropdown" item-end *ngIf="dropDownVisible(idx)" style="padding-right: 20px" 
               (click)="entryMoveTapped($event, entry, idx, 'down')"></ion-icon>
              <ion-icon name="trash" item-end (click)="entryRemoveTapped($event, entry, idx)"></ion-icon>
           </button>

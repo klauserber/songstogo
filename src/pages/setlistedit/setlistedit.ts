@@ -76,25 +76,25 @@ export class SetListeditPage implements OnInit{
     this.entries = this.setListService.reNumber(this.entries);
   }
 
-  dropUpVisible(index: number) {
-    return this.selectedIndex === undefined || index > this.selectedIndex;
+  dropUpVisible(index: number) : boolean {
+    return index > 0 && (this.selectedIndex === undefined || index > this.selectedIndex);
+  }
+  dropDownVisible(index: number) : boolean {
+    return (index + 1) < this.entries.length && (this.selectedIndex === undefined || index < this.selectedIndex);
   }
 
   entryMoveTapped(event, entry: SetListEntryModel, index: number, upDown: string) {
     event.stopPropagation();
     this.entries.splice(index, 1);
-    let idx = 0;
 
     if(this.selectedIndex === undefined) {
-      idx = upDown === "up" ? index - 1 : index + 1;
-      this.selectedIndex = idx;
-    }
-    else {
-      idx = this.selectedIndex;
+      this.selectedIndex = upDown === "up" ? index - 1 : index + 1;
     }
 
-    this.entries.splice(idx, 0, entry);
+    this.entries.splice(this.selectedIndex, 0, entry);
 
     this.entries = this.setListService.reNumber(this.entries);
+
+    if(this.selectedIndex < this.entries.length - 1) this.selectedIndex++;
   }
 }
