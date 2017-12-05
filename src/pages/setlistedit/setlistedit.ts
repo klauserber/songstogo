@@ -66,7 +66,7 @@ export class SetListeditPage implements OnInit{
     this.entries.splice(idx, 0, {
       title: song.title,
       songNumber: 0,
-      songId: song.id,
+      song: song,
       entryType: SetListEntryType.SONG
     });
     this.entries = this.setListService.reNumber(this.entries);

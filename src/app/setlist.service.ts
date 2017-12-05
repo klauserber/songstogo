@@ -12,7 +12,7 @@ export interface SetListEntryModel {
   songNumber: number;
   title: string;
   entryType: SetListEntryType;
-  songId: string;
+  song: Song;
 }
 
 @Injectable()
@@ -36,7 +36,7 @@ export class SetListService {
         case SetListEntryType.SONG: 
           setListEntries.push({
             pauseTitle: null,
-            songId: entry.songId
+            songId: entry.song.id
           });
         break;
         case SetListEntryType.PAUSE:
@@ -62,11 +62,11 @@ export class SetListService {
       if(entry.songId !== null) {
         entryType = SetListEntryType.SONG;
         song = this.dataService.getSongsMap().get(entry.songId);
-        title = song.title;
+        title = (song) ? song.title : null;
       }
       //let type = entry.songId != null ? SetListEntryType.SONG : SetListEntryType.PAUSE;
       entriesModel.push({
-        songId: entry.songId,
+        song: song,
         songNumber: 0,
         title: title,
         entryType: entryType

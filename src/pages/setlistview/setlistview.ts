@@ -1,3 +1,5 @@
+import { SetListSliderPage } from './../setlistslider/setlistslider';
+import { SetListService, SetListEntryModel } from './../../app/setlist.service';
 import { SetListeditPage } from './../setlistedit/setlistedit';
 import { DataService, SetList } from './../../app/data.service';
 import { Component } from '@angular/core';
@@ -12,12 +14,15 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 export class SetListviewPage implements OnInit {
 
   setList: SetList;
+  entries: SetListEntryModel[];
+  
 
   ngOnInit(): void {
     this.initSetList();
   }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService,
+      private setListService: SetListService) {
   }
 
   ionViewDidLoad() {
@@ -30,6 +35,7 @@ export class SetListviewPage implements OnInit {
 
     setList$.subscribe((setList) => {
       this.setList = setList;
+      this.entries = this.setListService.createEntriesModel(setList.setListEntries);
     });
   }
 
@@ -37,6 +43,14 @@ export class SetListviewPage implements OnInit {
     this.navCtrl.push(SetListeditPage, {
       setList: this.setList
     });
+  }
+
+  entryTapped(event, entry: SetListEntryModel, index: number) {
+    this.navCtrl.push(SetListSliderPage, {
+      entries: this.entries,
+      index: index
+    });
+
   }
 
 }

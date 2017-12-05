@@ -1,3 +1,4 @@
+import { SetListSliderPage } from './../pages/setlistslider/setlistslider';
 import { SetListService } from './setlist.service';
 import { SetListviewPage } from './../pages/setlistview/setlistview';
 import { SetListeditPage } from './../pages/setlistedit/setlistedit';
@@ -49,7 +50,8 @@ var firebaseconfig = {
     SongeditPage,
     SetListsPage,
     SetListeditPage,
-    SetListviewPage
+    SetListviewPage,
+    SetListSliderPage
   ],
   imports: [
     BrowserModule,
@@ -69,7 +71,8 @@ var firebaseconfig = {
     SongeditPage,
     SetListsPage,
     SetListeditPage,
-    SetListviewPage
+    SetListviewPage,
+    SetListSliderPage
   ],
   providers: [
     StatusBar,
