@@ -16,7 +16,7 @@ export class SetListeditPage implements OnInit{
   setList: SetList;
   songs: Observable<Song[]>;
   entries: SetListEntryModel[] = [];
-  selectedIndex;
+  selectedIndex: number = undefined;
   
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -61,6 +61,7 @@ export class SetListeditPage implements OnInit{
   }
 
   songTapped(event, song: Song) {
+    event.stopPropagation();
     let idx = this.selectedIndex !== undefined ? this.selectedIndex : this.entries.length;
     this.entries.splice(idx, 0, {
       title: song.title,
@@ -69,12 +70,12 @@ export class SetListeditPage implements OnInit{
       entryType: SetListEntryType.SONG
     });
     this.entries = this.setListService.reNumber(this.entries);
-    this.scrollToSelected();
   }
   
   entryRemoveTapped(event, entry: SetListEntryModel, index: number) {
     this.entries.splice(index, 1);
     this.entries = this.setListService.reNumber(this.entries);
+    this.selectedIndex = undefined;
   }
 
   dropUpVisible(index: number) : boolean {
@@ -97,13 +98,6 @@ export class SetListeditPage implements OnInit{
     this.entries = this.setListService.reNumber(this.entries);
 
     if(this.selectedIndex < this.entries.length - 1) this.selectedIndex++;
-    this.scrollToSelected();
   }
 
-  scrollToSelected() {
-    if(this.selectedIndex !== undefined) {
-      let elem = document.getElementById("entry-" + this.selectedIndex);
-      elem.scrollIntoView();
-    }
-  }
 }

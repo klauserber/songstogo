@@ -18,10 +18,6 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item>
-      <ion-label floating>Title</ion-label>
-      <ion-input type="text" [(ngModel)]="setList.title" ></ion-input>
-    </ion-item>
   </ion-list>
 
   <ion-grid>
@@ -31,21 +27,27 @@
           <ion-list>
             <button ion-item *ngFor="let song of dataService.songs" (click)="songTapped($event, song)">
               {{song.title}}
-            </button>
+              <ion-icon name="add-circle" item-end (click)="songTapped($event, song)"></ion-icon>
+              <ion-icon name="arrow-dropright" item-end *ngIf="selectedIndex !== undefined" (click)="songTapped($event, song)"></ion-icon>
+          </button>
           </ion-list>
         </ion-scroll>        
       </ion-col>
       <ion-col col-6 class="fixed-content">
         <ion-scroll scrollY="true" style="height: 100%;">
+          <ion-item style="margin-bottom: 30px">
+            <ion-label floating>Setlist Title</ion-label>
+            <ion-input type="text" [(ngModel)]="setList.title" ></ion-input>
+          </ion-item>
           <ion-list>
             <button ion-item id="entry-{{idx}}" *ngFor="let entry of entries; let idx = index" 
               (click)="entryTapped($event, entry, idx)" [ngClass]="selectedIndex === idx ? 'entry-selected' : 'none'">
               {{entry.songNumber}}. {{entry.title}}
               <ion-icon name="arrow-dropup" item-end *ngIf="dropUpVisible(idx)" style="padding-right: 20px"
-                (click)="entryMoveTapped($event, entry, idx, 'up')"></ion-icon>
+                  (click)="entryMoveTapped($event, entry, idx, 'up')"></ion-icon>
               <ion-icon name="arrow-dropdown" item-end *ngIf="dropDownVisible(idx)" style="padding-right: 20px" 
                 (click)="entryMoveTapped($event, entry, idx, 'down')"></ion-icon>
-              <ion-icon name="trash" item-end (click)="entryRemoveTapped($event, entry, idx)"></ion-icon>
+              <ion-icon name="remove-circle" item-end (click)="entryRemoveTapped($event, entry, idx)"></ion-icon>
             </button>
           </ion-list>
         </ion-scroll>
