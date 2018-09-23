@@ -1,17 +1,17 @@
-import { SetListSliderPage } from './../pages/setlistslider/setlistslider';
+import { SetListSliderPage } from './pages/setlistslider/setlistslider';
 import { SetListService } from './setlist.service';
-import { SetListviewPage } from './../pages/setlistview/setlistview';
-import { SetListeditPage } from './../pages/setlistedit/setlistedit';
+import { SetListviewPage } from './pages/setlistview/setlistview';
+import { SetListeditPage } from './pages/setlistedit/setlistedit';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule } from '@ionic/angular';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { SongsPage } from '../pages/songs/songs';
-import { SongviewPage } from './../pages/songview/songview';
-import { SongeditPage } from './../pages/songedit/songedit';
-import { SetListsPage } from './../pages/setlists/setlists';
+import { HomePage } from './pages/home/home';
+import { SongsPage } from './pages/songs/songs';
+import { SongviewPage } from './pages/songview/songview';
+import { SongeditPage } from './pages/songedit/songedit';
+import { SetListsPage } from './pages/setlists/setlists';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';

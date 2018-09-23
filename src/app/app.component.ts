@@ -1,6 +1,6 @@
 import { SetListsPage } from './../pages/setlists/setlists';
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 

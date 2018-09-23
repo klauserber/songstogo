@@ -6,7 +6,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { Platform } from 'ionic-angular';
+import { Platform } from '@ionic/angular';
 
 
 @Injectable()

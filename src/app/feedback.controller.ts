@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ToastController } from "ionic-angular/components/toast/toast-controller";
-import { ToastOptions } from "ionic-angular/components/toast/toast-options";
+import { ToastController } from "@ionic/angular";
 
 
 @Injectable()
@@ -28,13 +27,13 @@ export class FeedbackController {
     this.feedback(msg, "error");
   }
 
-  private feedback(msg: string, cssClass: string) {
-    let toast = this.toastCtrl.create({
+  private async feedback(msg: string, cssClass: string) {
+    const toast = await this.toastCtrl.create({
       message: msg,
       duration: 3000,
       position: 'top',
       cssClass: cssClass
-    } as ToastOptions);
+    });
 
     toast.present();
   }

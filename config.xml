@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.isium.songstogo" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Songstogo</name>
+<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>songstogo</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
@@ -12,7 +12,7 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <preference name="ScrollEnabled" value="false" />
-    <preference name="android-minSdkVersion" value="16" />
+    <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="FadeSplashScreenDuration" value="300" />
@@ -76,21 +76,10 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
-    <allow-navigation href="http://10.6.6.125:8100" />
-    <allow-navigation href="http://192.168.43.33:8100" />
-    <allow-navigation href="http://10.0.75.1:8101" />
-    <allow-navigation href="http://192.168.43.33:8101" />
-    <engine name="android" spec="^6.3.0" />
-    <plugin name="cordova-plugin-googleplus" spec="^5.1.1">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.1031297615094-eo5chp8lq9phq2aq48gn9r2vmnsblrha" />
-    </plugin>
-    <plugin name="cordova-plugin-facebook4" spec="^1.9.1">
-        <variable name="APP_ID" value="238695393326428" />
-        <variable name="APP_NAME" value="de-isium-songstogo" />
-    </plugin>
-    <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
-    <plugin name="cordova-plugin-device" spec="^1.1.6" />
-    <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
-    <plugin name="cordova-plugin-ionic-webview" spec="^1.1.15" />
+    <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
+    <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
+    <plugin name="cordova-plugin-device" spec="2.0.2" />
+    <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
+    <plugin name="cordova-plugin-ionic-webview" spec="^2.0.0" />
+    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
 </widget>
