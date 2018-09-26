@@ -1,7 +1,6 @@
+import { of } from 'rxjs';
 import { SetListEntry, SetList, DataService, Song } from './data.service';
 import { Injectable } from "@angular/core";
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/take';
 
 export enum SetListEntryType {
   SONG,
@@ -21,12 +20,12 @@ export class SetListService {
   constructor(private dataService: DataService) {}
 
   getEmpty() {
-    return { 
+    return of({ 
       id: null,
       date: 0,
       title: "",
       setListEntries: []
-    } as SetList;
+    } as SetList);
   }
 
   createSetListEntries(entriesModel: SetListEntryModel[]) {

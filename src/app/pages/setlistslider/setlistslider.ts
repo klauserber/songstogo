@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from '@ionic/angular';
-import { SetListEntryModel } from '../../app/setlist.service';
+import { SetListEntryModel } from '../../setlist.service';
 
 /**
  * Generated class for the SetlistsliderPage page.

@@ -1,15 +1,16 @@
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SetListSliderPage } from './../setlistslider/setlistslider';
-import { SetListService, SetListEntryModel } from './../../app/setlist.service';
+import { SetListService, SetListEntryModel } from './../../setlist.service';
 import { SetListeditPage } from './../setlistedit/setlistedit';
-import { DataService, SetList } from './../../app/data.service';
+import { DataService, SetList } from './../../data.service';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from '@ionic/angular';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 
 @Component({
   selector: 'page-setListview',
-  templateUrl: 'setListview.html',
+  templateUrl: 'setlistview.html',
 })
 export class SetListviewPage implements OnInit {
 
@@ -21,36 +22,19 @@ export class SetListviewPage implements OnInit {
     this.initSetList();
   }
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService,
-      private setListService: SetListService) {
-  }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private setListService: SetListService) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SetListviewPage');
   }
 
   async initSetList() {
-    let id = this.navParams.get("setListid");
-    let setList$ = await this.dataService.findSetListById(id);
-
-    setList$.subscribe((setList) => {
-      this.setList = setList;
-      this.entries = this.setListService.createEntriesModel(setList.setListEntries);
-    });
+    this.route.paramMap.pipe(switchMap((params: ParamMap) => this.dataService.findSetListById(params.get("id"))))
+      .subscribe((setList) => {
+        this.setList = setList;
+        this.entries = this.setListService.createEntriesModel(setList.setListEntries);
+      });    
   }
 
-  setListEditTapped(event) {
-    this.navCtrl.push(SetListeditPage, {
-      setList: this.setList
-    });
-  }
-
-  entryTapped(event, entry: SetListEntryModel, index: number) {
-    this.navCtrl.push(SetListSliderPage, {
-      entries: this.entries,
-      index: index
-    });
-
-  }
 
 }

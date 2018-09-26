@@ -1,3 +1,4 @@
+import { Router, ActivatedRoute } from '@angular/router';
 import { FeedbackController } from '../../feedback.controller';
 import { SongeditPage } from './../songedit/songedit';
 import { SongviewPage } from './../songview/songview';
@@ -14,30 +15,16 @@ import { AlertController } from '@ionic/angular';
 export class SongsPage {
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public dataService: DataService, 
-    private alertCtrl: AlertController, private feedbackCtrl: FeedbackController) {
-  }
+  constructor(public dataService: DataService, private alertCtrl: AlertController, private feedbackCtrl: FeedbackController) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SongsPage');
   }
 
-  songTapped(event, song: Song) {
-    this.navCtrl.push(SongviewPage, {
-      songid: song.id
-    });
-  }
-
-  songNewTapped(event) {
-    this.navCtrl.push(SongeditPage, {
-      song: { title: "foo", text: "foobar" }
-    });
-  }
-
-  showRemoveConfirm(event, song: Song) {
+  async showRemoveConfirm(event, song: Song) {
     event.stopPropagation();
-    let confirm = this.alertCtrl.create({
-      title: "Remove Song",
+    const confirm = await this.alertCtrl.create({
+      header: "Remove Song",
       message: 'Remove "' + song.title + '"?',
       buttons: [
         {

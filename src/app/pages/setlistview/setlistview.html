@@ -19,15 +19,15 @@
 <ion-content padding>
   <ion-list>
     <button ion-item id="entry-{{idx}}" *ngFor="let entry of entries; let idx = index" 
-      (click)="entryTapped($event, entry, idx)">
+      [href]="'/setlistslider/' + setList.id + '/' + idx">
       {{entry.songNumber}}. {{entry.title}}
     </button>
   </ion-list>
 
   <ion-fab right top>
-    <button ion-fab (click)="setListEditTapped($event)">
+    <ion-button ion-fab href="'/setlistedit/' + setList.id">
       <ion-icon name="create"></ion-icon>
-    </button>
+    </ion-button>
   </ion-fab>
 
 </ion-content>

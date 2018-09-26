@@ -12,14 +12,14 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let song of dataService.songs" (click)="songTapped($event, song)">
-      {{song.title}}
+    <ion-item *ngFor="let song of dataService.songs" [href]="'/songview/:' + 'song.id'">
+       {{song.title}}
       <ion-icon name="trash" item-end (click)="showRemoveConfirm($event, song)" style="padding-right: 30px"></ion-icon>
     </ion-item>
   </ion-list>
 
   <ion-fab right edge>
-    <button ion-fab (click)="songNewTapped($event)">
+    <button ion-fab [href]="'/songedit'">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>

@@ -1,10 +1,13 @@
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { AppRoutingModule } from './app-routing.module';
 import { SetListSliderPage } from './pages/setlistslider/setlistslider';
 import { SetListService } from './setlist.service';
 import { SetListviewPage } from './pages/setlistview/setlistview';
 import { SetListeditPage } from './pages/setlistedit/setlistedit';
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from '@ionic/angular';
+import { NgModule } from '@angular/core';
 
 import { MyApp } from './app.component';
 import { HomePage } from './pages/home/home';
@@ -13,23 +16,20 @@ import { SongviewPage } from './pages/songview/songview';
 import { SongeditPage } from './pages/songedit/songedit';
 import { SetListsPage } from './pages/setlists/setlists';
 
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Facebook } from '@ionic-native/facebook';
 
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 
-import { PapaParseModule } from 'ngx-papaparse';
+//import { PapaParseModule } from 'ngx-papaparse';
 
 import { AuthService } from './auth.service';
 import { DataService } from './data.service';
 import { FeedbackController } from './feedback.controller';
-
+import { RouteReuseStrategy } from '@angular/router';
 
 
 var firebaseconfig = {
@@ -54,15 +54,15 @@ var firebaseconfig = {
     SetListSliderPage
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(),
     AngularFireModule.initializeApp(firebaseconfig),
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
-    AngularFireDatabaseModule,
-    PapaParseModule
+    AngularFireDatabaseModule
+    //PapaParseModule
   ],
-  bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
@@ -77,14 +77,14 @@ var firebaseconfig = {
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     GooglePlus,
     Facebook,
-
     AuthService,
     DataService,
     SetListService,
     FeedbackController
-  ]
+  ],
+  bootstrap: [MyApp]
 })
 export class AppModule {}

@@ -1,8 +1,8 @@
 import { Song, StgUser, SetList } from './data.service';
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 import * as firebase from 'firebase/app';
 //import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
@@ -129,7 +129,7 @@ export class DataService {
     return this.setListsCollection.doc(id).delete();
   }
 
-  findSongById(id: string) {
+  findSongById(id: string) : Observable<Song> {
     return this.songsCollection.doc(id).valueChanges() as Observable<Song>;
   }
 
@@ -201,7 +201,7 @@ export class DataService {
           let reader = new FileReader();
 
           reader.onloadend = async (e) => {
-            let doc = parser.parseFromString(reader.result, "text/html");
+            let doc = parser.parseFromString(reader.result.toString(), "text/html");
             console.log(doc);
             let count = await this.imoprtSongsFromDoc(doc);
             resolve(count);

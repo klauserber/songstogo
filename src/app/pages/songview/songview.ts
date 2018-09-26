@@ -1,6 +1,7 @@
-import { Song, DataService } from './../../app/data.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { Song, DataService } from './../../data.service';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from '@ionic/angular';
 import { SongeditPage } from '../songedit/songedit';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
@@ -24,18 +25,16 @@ export class SongviewPage implements OnInit {
   }
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private dataService: DataService) {
-
-  }
+  constructor(private route: ActivatedRoute, private dataService: DataService) {}
 
   async initSong() {
-    let id = this.navParams.get("songid");
-    let songOb = await this.dataService.findSongById(id);
-
-    songOb.subscribe((song) => {
-      this.song = song;
-    });
-
+    
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => 
+        this.dataService.findSongById(params.get('id'))
+      )
+    ).subscribe((song) => this.song = song);    
+    
   }
 
 
@@ -43,9 +42,4 @@ export class SongviewPage implements OnInit {
     console.log('ionViewDidLoad SongviewPage');
   }
 
-  songEditTapped(event) {
-    this.navCtrl.push(SongeditPage, {
-      song: this.song
-    });
-  }
 }

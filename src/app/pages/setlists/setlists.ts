@@ -1,14 +1,12 @@
-import { FeedbackController } from './../../app/feedback.controller';
-import { SetListviewPage } from './../setlistview/setlistview';
-import { SetListeditPage } from './../setlistedit/setlistedit';
-import { DataService, SetList } from './../../app/data.service';
+import { FeedbackController } from './../../feedback.controller';
+import { DataService, SetList } from './../../data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from '@ionic/angular';
 
 
 @Component({
   selector: 'page-setLists',
-  templateUrl: 'setLists.html',
+  templateUrl: 'setlists.html',
 })
 export class SetListsPage {
 
@@ -20,20 +18,11 @@ export class SetListsPage {
     console.log('ionViewDidLoad SetListsPage');
   }
 
-  setListTapped(event, setList: SetList) {
-    this.navCtrl.push(SetListviewPage, {
-      setListid: setList.id
-    });
-  }
 
-  setListNewTapped(event) {
-    this.navCtrl.push(SetListeditPage);
-  }
-
-  showRemoveConfirm(event, setList: SetList) {
+  async showRemoveConfirm(event, setList: SetList) {
     event.stopPropagation();
-    let confirm = this.alertCtrl.create({
-      title: "Remove SetList",
+    const confirm = await this.alertCtrl.create({
+      header: "Remove SetList",
       message: 'Remove "' + setList.title + '"?',
       buttons: [
         {

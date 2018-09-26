@@ -14,7 +14,7 @@
   <pre>{{ song?.text }}</pre>
 
   <ion-fab right top>
-    <button ion-fab (click)="songEditTapped($event)">
+    <button ion-fab [href]="'/songedit/:' + song.id" >
       <ion-icon name="create"></ion-icon>
     </button>
   </ion-fab>
