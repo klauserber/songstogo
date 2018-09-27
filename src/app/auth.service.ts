@@ -2,8 +2,8 @@ import { DataService } from './data.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import { GooglePlus } from '@ionic-native/google-plus';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { Platform } from '@ionic/angular';

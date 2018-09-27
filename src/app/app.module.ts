@@ -16,8 +16,6 @@ import { SongviewPage } from './pages/songview/songview';
 import { SongeditPage } from './pages/songedit/songedit';
 import { SetListsPage } from './pages/setlists/setlists';
 
-import { GooglePlus } from '@ionic-native/google-plus';
-import { Facebook } from '@ionic-native/facebook';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -30,6 +28,8 @@ import { AuthService } from './auth.service';
 import { DataService } from './data.service';
 import { FeedbackController } from './feedback.controller';
 import { RouteReuseStrategy } from '@angular/router';
+import { Facebook } from '@ionic-native/facebook/ngx';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 
 var firebaseconfig = {
