@@ -6,12 +6,12 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-toolbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Setlist {{ setList.title }}</ion-title>
-  </ion-navbar>
+  </ion-toolbar>
 
 </ion-header>
 
@@ -23,7 +23,7 @@
   <ion-grid>
     <ion-row class="main-content">
       <ion-col col-6>
-        <ion-scroll scrollY="true" style="height: 100%;">
+        <!--ion-scroll scrollY="true" style="height: 100%;"-->
           <ion-list>
             <button ion-item *ngFor="let song of dataService.songs" (click)="songTapped($event, song)">
               {{song.title}}
@@ -31,10 +31,10 @@
               <ion-icon name="arrow-dropright" item-end *ngIf="selectedIndex !== undefined" (click)="songTapped($event, song)"></ion-icon>
           </button>
           </ion-list>
-        </ion-scroll>        
+        <!--/ion-scroll-->
       </ion-col>
       <ion-col col-6 class="fixed-content">
-        <ion-scroll scrollY="true" style="height: 100%;">
+        <!--ion-scroll scrollY="true" style="height: 100%;"-->
           <ion-item style="margin-bottom: 30px">
             <ion-label floating>Setlist Title</ion-label>
             <ion-input type="text" [(ngModel)]="setList.title" ></ion-input>
@@ -50,7 +50,7 @@
               <ion-icon name="remove-circle" item-end (click)="entryRemoveTapped($event, entry, idx)"></ion-icon>
             </button>
           </ion-list>
-        </ion-scroll>
+        <!--/ion-scroll-->
       </ion-col>
     </ion-row>
   </ion-grid>

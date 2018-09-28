@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -9,7 +10,7 @@ import { SetListeditPage } from './pages/setlistedit/setlistedit';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { MyApp } from './app.component';
+import { SongsToGoApp } from './app.component';
 import { HomePage } from './pages/home/home';
 import { SongsPage } from './pages/songs/songs';
 import { SongviewPage } from './pages/songview/songview';
@@ -43,7 +44,7 @@ var firebaseconfig = {
 
 @NgModule({
   declarations: [
-    MyApp,
+    SongsToGoApp,
     HomePage,
     SongsPage,
     SongviewPage,
@@ -60,11 +61,12 @@ var firebaseconfig = {
     AngularFireModule.initializeApp(firebaseconfig),
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    FormsModule
     //PapaParseModule
   ],
   entryComponents: [
-    MyApp,
+    SongsToGoApp,
     HomePage,
     SongsPage,
     SongviewPage,
@@ -85,6 +87,6 @@ var firebaseconfig = {
     SetListService,
     FeedbackController
   ],
-  bootstrap: [MyApp]
+  bootstrap: [SongsToGoApp]
 })
 export class AppModule {}

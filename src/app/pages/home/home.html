@@ -1,10 +1,10 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Home</ion-title>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
@@ -13,18 +13,18 @@
   <h4>Login</h4>
   <p *ngIf="authService.isAuthenticated()">Logged in as {{ authService.getUserInfo() }} </p>
 
-  <button ion-button googleLogin *ngIf="!authService.isAuthenticated()" (click)="authService.loginGoogle()">Google Login</button>
-  <button ion-button fbLogin *ngIf="!authService.isAuthenticated()" (click)="authService.loginFacebook()">Facebook Login</button>
-  <button ion-button fbLogin *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Logout</button>
+  <ion-button googleLogin *ngIf="!authService.isAuthenticated()" (click)="authService.loginGoogle()">Google Login</ion-button>
+  <ion-button fbLogin *ngIf="!authService.isAuthenticated()" (click)="authService.loginFacebook()">Facebook Login</ion-button>
+  <ion-button fbLogin *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Logout</ion-button>
 
   <div *ngIf="authService.isAuthenticated()">
     <h4 style="padding-top: 20px">Data management</h4>
 
-    <button ion-button (click)="onYamlImportClick()">Import songs</button>
-    <button ion-button (click)="onHtmlImportClick()">Import songs HTML</button>
+    <ion-button (click)="onYamlImportClick()">Import songs</ion-button>
+    <ion-button (click)="onHtmlImportClick()">Import songs HTML</ion-button>
     <br />
-    <button ion-button export  (click)="exportSongs($event)">Export songs</button>
-    <button ion-button export  (click)="showRemoveSongsConfirm($event)">Remove all songs</button>
+    <ion-button export (click)="exportSongs($event)">Export songs</ion-button>
+    <ion-button export (click)="showRemoveSongsConfirm($event)">Remove all songs</ion-button>
 
     <input type="file" (change)="onYamlImport($event)" class="file-input" style="opacity: 0" accept=".yaml" #fileInp />
     <input type="file" (change)="onHtmlImport($event)" class="file-input" style="opacity: 0" accept=".htm,.html" #fileHtmlInp />

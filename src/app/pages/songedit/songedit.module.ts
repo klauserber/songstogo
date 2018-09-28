@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
@@ -9,6 +10,7 @@ import { SongeditPage } from './songedit';
   ],
   imports: [
     IonicModule,
+    FormsModule,
     RouterModule.forChild([{
       path: 'songedit',
       component: SongeditPage

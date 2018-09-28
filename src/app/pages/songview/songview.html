@@ -1,11 +1,11 @@
 <ion-header>
 
-  <ion-navbar>
+  <ion-toolbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Song: {{ song?.title }} </ion-title>
-  </ion-navbar>
+  </ion-toolbar>
 
 </ion-header>
 
@@ -14,9 +14,9 @@
   <pre>{{ song?.text }}</pre>
 
   <ion-fab right top>
-    <button ion-fab [href]="'/songedit/:' + song.id" >
+    <ion-button ion-fab [href]="'/songedit/:' + song.id" >
       <ion-icon name="create"></ion-icon>
-    </button>
+    </ion-button>
   </ion-fab>
 
 </ion-content>
