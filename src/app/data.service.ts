@@ -85,6 +85,11 @@ export class DataService {
     });
   }
 
+  findAllSongs() {
+    this.songsCollection = this.userDoc.collection<Song>("/songs", ref => ref.orderBy("title"));
+    return this.songsCollection.valueChanges();
+  }
+
   initSetListsCollection() {
     this.setListsCollection = this.userDoc.collection<SetList>("/setlists", ref => ref.orderBy("date", "desc"));
 

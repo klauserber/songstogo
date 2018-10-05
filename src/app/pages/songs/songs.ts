@@ -6,6 +6,7 @@ import { DataService, Song } from '../../data.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -14,14 +15,18 @@ import { AlertController } from '@ionic/angular';
 })
 export class SongsPage {
 
+  public songs: Observable<Song[]>
 
   constructor(public dataService: DataService, private alertCtrl: AlertController, private feedbackCtrl: FeedbackController) {}
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SongsPage');
+  async ngOnInit() {
+    console.log('onInit SongsPage');
+    this.songs = this.dataService.findAllSongs();
   }
 
+
   async showRemoveConfirm(event, song: Song) {
+    console.log("showRemoveConfirm");
     event.stopPropagation();
     const confirm = await this.alertCtrl.create({
       header: "Remove Song",
