@@ -2,7 +2,7 @@ import { Song, StgUser, SetList } from './data.service';
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import * as firebase from 'firebase/app';
 //import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
@@ -85,9 +85,14 @@ export class DataService {
     });
   }
 
-  findAllSongs() {
-    this.songsCollection = this.userDoc.collection<Song>("/songs", ref => ref.orderBy("title"));
-    return this.songsCollection.valueChanges();
+  findAllSongs() : Observable<Song[]> {
+    if(this.userDoc != undefined) {
+      this.songsCollection = this.userDoc.collection<Song>("/songs", ref => ref.orderBy("title"));
+      return this.songsCollection.valueChanges();  
+    }
+    else {
+      return of([] as Song[]);
+    }
   }
 
   initSetListsCollection() {
@@ -135,7 +140,12 @@ export class DataService {
   }
 
   findSongById(id: string) : Observable<Song> {
-    return this.songsCollection.doc(id).valueChanges() as Observable<Song>;
+    if(this.songsCollection != undefined) {
+      return this.songsCollection.doc(id).valueChanges() as Observable<Song>;
+    }
+    else {
+      return of({} as Song);
+    }
   }
 
   findSetListById(id: string) {

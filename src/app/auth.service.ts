@@ -1,5 +1,5 @@
 import { DataService } from './data.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
@@ -16,15 +16,20 @@ export class AuthService {
 
     authState: Observable<firebase.User>;
 
+    loginState: Subject<firebase.User>;
+    
+
 
     constructor(private google: GooglePlus, private facebook: Facebook, private afAuth: AngularFireAuth,
         public platform: Platform, private data: DataService) {
 
       this.authState = this.afAuth.authState;
+      this.loginState = new Subject<firebase.User>();
 
       this.authState.subscribe(user => {
         this.user = user;
         this.data.initUserDoc(user);
+        this.loginState.next(user);
       });
     }
 

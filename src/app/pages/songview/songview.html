@@ -1,22 +1,36 @@
 <ion-header>
-
   <ion-toolbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Song: {{ song?.title }} </ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Song: {{ (song | async)?.title }} </ion-title>
   </ion-toolbar>
-
 </ion-header>
 
 
 <ion-content padding>
-  <pre>{{ song?.text }}</pre>
+  <pre>{{ (song | async)?.text }}</pre>
 
-  <ion-fab right top>
-    <ion-button ion-fab [href]="'/songedit/' + song?.id" >
-      <ion-icon name="create"></ion-icon>
-    </ion-button>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
   </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="end">
+    <ion-fab-button>
+      <ion-icon name="arrow-dropup"></ion-icon>
+    </ion-fab-button>
+  
+    <ion-fab-list side="top">
+      <ion-fab-button [href]="songEditRoute">
+        <ion-icon name="create"></ion-icon>
+      </ion-fab-button>
+
+      <ion-fab-button (click)="showRemoveConfirm($event)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-fab-button>
+  
+    </ion-fab-list>
+  
+  
+  </ion-fab>  
 
 </ion-content>

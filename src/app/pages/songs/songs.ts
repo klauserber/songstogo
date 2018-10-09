@@ -1,3 +1,4 @@
+import { AuthService } from './../../auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FeedbackController } from '../../feedback.controller';
 import { SongeditPage } from './../songedit/songedit';
@@ -12,47 +13,25 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'page-songs',
   templateUrl: 'songs.html',
+  styleUrls: [ "songs.scss" ]
+
 })
 export class SongsPage {
 
   public songs: Observable<Song[]>
 
-  constructor(public dataService: DataService, private alertCtrl: AlertController, private feedbackCtrl: FeedbackController) {}
+  constructor(private authService: AuthService, public dataService: DataService) {}
 
   async ngOnInit() {
     console.log('onInit SongsPage');
     this.songs = this.dataService.findAllSongs();
-  }
 
-
-  async showRemoveConfirm(event, song: Song) {
-    console.log("showRemoveConfirm");
-    event.stopPropagation();
-    const confirm = await this.alertCtrl.create({
-      header: "Remove Song",
-      message: 'Remove "' + song.title + '"?',
-      buttons: [
-        {
-          text: 'No',
-          handler: () => {
-            console.log('No clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: async () => {
-            try {
-              await this.dataService.removeSong(song.id);
-              this.feedbackCtrl.successFeedback('Song "' + song.title + '" removed');
-            } catch (error) {
-              this.feedbackCtrl.errorFeedback("Remove song failed", error);
-            }
-          }
-        }
-      ]
+    this.authService.loginState.subscribe((user) => {
+      this.songs = this.dataService.findAllSongs();
     });
-    confirm.present();
   }
+
+
 
 
 

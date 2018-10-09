@@ -1,11 +1,12 @@
+import { AuthService } from './../../auth.service';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Song, DataService } from './../../data.service';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NavController, NavParams } from '@ionic/angular';
 import { FeedbackController } from '../../feedback.controller';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 /**
  * Generated class for the SongeditPage page.
@@ -17,23 +18,33 @@ import { of } from 'rxjs';
 @Component({
   selector: 'page-songedit',
   templateUrl: 'songedit.html',
+  styleUrls: [ "songedit.scss" ]
 })
 export class SongeditPage {
 
-  public song: Song;
+  public song: Song = this.newSong();
 
-  constructor(private navController: NavController, private route: ActivatedRoute, private dataService: DataService, private feedbackCtrl: FeedbackController) {}
+  constructor(private authService: AuthService, private navController: NavController, private route: ActivatedRoute, private dataService: DataService, private feedbackCtrl: FeedbackController) {}
 
   ngOnInit() {
-    this.route.paramMap.pipe(switchMap((params: ParamMap) => { 
+    this.initSong();
+    this.authService.loginState.subscribe((user) => this.initSong());
+  }
+  
+  initSong() {
+    this.route.paramMap.subscribe(((params: ParamMap) => { 
       let songId = params.get("id");
       if(songId != undefined) {
-        return this.dataService.findSongById(songId) 
+        this.dataService.findSongById(songId).subscribe((song) => this.song = song);
       }
       else {
-        return of({ title: "New Song", text: "Song text" } as Song);
+        this.song = this.newSong();
       }
-    })).subscribe((song) => this.song = song);
+    }));
+  }
+
+  newSong() {
+    return { title: "New Song", text: "Song text" } as Song;
   }
 
   ionViewDidLoad() {
