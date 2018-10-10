@@ -20,12 +20,12 @@ export class SetListService {
   constructor(private dataService: DataService) {}
 
   getEmpty() {
-    return of({ 
+    return { 
       id: null,
       date: 0,
       title: "",
       setListEntries: []
-    } as SetList);
+    } as SetList;
   }
 
   createSetListEntries(entriesModel: SetListEntryModel[]) {

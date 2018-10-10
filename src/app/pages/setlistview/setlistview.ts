@@ -1,3 +1,5 @@
+import { FeedbackController } from './../../feedback.controller';
+import { NavController, AlertController } from '@ionic/angular';
 import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SetListSliderPage } from './../setlistslider/setlistslider';
@@ -6,6 +8,7 @@ import { SetListeditPage } from './../setlistedit/setlistedit';
 import { DataService, SetList } from './../../data.service';
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { AuthService } from '../../auth.service';
 
 
 @Component({
@@ -20,9 +23,11 @@ export class SetListviewPage implements OnInit {
 
   ngOnInit(): void {
     this.initSetList();
+    this.authService.loginState.subscribe((user) => this.initSetList());
   }
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private setListService: SetListService) {}
+  constructor(private authService: AuthService, private route: ActivatedRoute, private dataService: DataService, private setListService: SetListService,
+    private alertCtrl: AlertController, private feedbackCtrl: FeedbackController, private navController: NavController) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SetListviewPage');
@@ -34,6 +39,36 @@ export class SetListviewPage implements OnInit {
         this.setList = setList;
         this.entries = this.setListService.createEntriesModel(setList.setListEntries);
       });    
+  }
+
+
+  async showRemoveConfirm(event) {
+    event.stopPropagation();
+    const confirm = await this.alertCtrl.create({
+      header: "Remove SetList",
+      message: 'Remove "' + this.setList.title + '"?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: async () => {
+            try {
+              await this.dataService.removeSetList(this.setList.id);
+              this.feedbackCtrl.successFeedback('SetList "' + this.setList.title + '" removed');
+              this.navController.goBack();
+            } catch (error) {
+              this.feedbackCtrl.errorFeedback('Failed to remove SetList "' + this.setList.title + '"', error);
+            }
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 

@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from '@ionic/angular';
-import { SetListEntryModel } from '../../setlist.service';
+import { DataService } from './../../data.service';
+import { switchMap } from 'rxjs/operators';
+import { AuthService } from './../../auth.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, Slides } from '@ionic/angular';
+import { SetListEntryModel, SetListService } from '../../setlist.service';
+import { SetList } from '../../data.service';
+import { of } from 'rxjs';
 
 /**
  * Generated class for the SetlistsliderPage page.
@@ -12,17 +18,39 @@ import { SetListEntryModel } from '../../setlist.service';
 @Component({
   selector: 'page-setlistslider',
   templateUrl: 'setlistslider.html',
+  styleUrls: [ "setlistslider.scss" ]
 })
 export class SetListSliderPage {
 
-  entries: SetListEntryModel[];
+  @ViewChild(Slides) slides: Slides;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.entries = navParams.get("entries");
+  entries: SetListEntryModel[];
+  setList: SetList;
+
+  constructor(private route: ActivatedRoute, private authService: AuthService, private dataService: DataService,
+    private setListService: SetListService) {}
+
+  ngOnInit() {
+    this.initSetList();
+    this.authService.loginState.subscribe((user) => this.initSetList());
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SetlistsliderPage');
+  async initSetList() {
+    this.route.paramMap.pipe(switchMap((params: ParamMap) => {
+      return of({
+        id: params.get("id"),
+        index: params.get("index")
+      })
+    })).subscribe((p) => {
+      this.dataService.findSetListById(p.id)
+        .subscribe((setList) => {
+          this.setList = setList;
+          this.entries = this.setListService.createEntriesModel(setList.setListEntries);
+          this.slides.ionSlidesDidLoad.subscribe((val) => {
+            this.slides.slideTo(parseInt(p.index), 0);
+        });
+      });
+    });
   }
 
 }

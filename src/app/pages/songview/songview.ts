@@ -4,9 +4,10 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Song, DataService } from './../../data.service';
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AlertController, NavController } from '@ionic/angular';
 import { FeedbackController } from '../../feedback.controller';
+import { switchMap } from 'rxjs/operators';
 
 /**
  * Generated class for the SongviewPage page.
@@ -35,13 +36,11 @@ export class SongviewPage implements OnInit {
 
   async initSong() {
     
-    // NOT WORKING, why?
-    /*this.route.paramMap.pipe(switchMap(
-      (params: ParamMap) => this.findSong(params.get('id'))
-    ));*/
-    
-    this.route.paramMap.subscribe((params: ParamMap) => this.findSong(params.get('id')));
-    
+    this.route.paramMap.pipe(switchMap((params: ParamMap) => of(params.get("id")))).subscribe((id) => {
+      this.findSong(id);
+    });
+  
+    //this.route.paramMap.subscribe((params: ParamMap) => this.findSong(params.get('id')));
     
   }
 

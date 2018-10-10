@@ -1,6 +1,7 @@
+import { AuthService } from './../../auth.service';
 import { switchMap } from 'rxjs/operators';
 import { SetListEntryType, SetListService, SetListEntryModel } from './../../setlist.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { FeedbackController } from './../../feedback.controller';
 import { SetList, DataService, Song } from './../../data.service';
 import { Component } from '@angular/core';
@@ -12,38 +13,41 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 @Component({
   selector: 'page-setListedit',
   templateUrl: 'setlistedit.html',
+  styleUrls: [ "setlistedit.scss" ]
 })
 export class SetListeditPage implements OnInit{
 
   setList: SetList;
-  songs: Observable<Song[]>;
   entries: SetListEntryModel[] = [];
   selectedIndex: number = undefined;
   
 
-  constructor(public router: Router, public route: ActivatedRoute, private navController: NavController,
+  constructor(private authService: AuthService, public router: Router, public route: ActivatedRoute, private navController: NavController,
       private dataService : DataService, private setListService: SetListService,
       private FeedbackCtrl: FeedbackController) {
     
   }
+  
+  ngOnInit() {
+    this.initSetList();
+    this.authService.loginState.subscribe((user) => this.initSetList());
+  }
 
-  async ngOnInit() {
-    this.route.paramMap.pipe(switchMap((params: ParamMap) => { 
-      let setlistId = params.get('id');
-      if(setlistId === undefined) {
-        return this.setListService.getEmpty();
+  initSetList() {
+    this.route.paramMap.pipe(switchMap((params: ParamMap) => of(params.get("id")))).subscribe((id) => {
+      
+      if(id === undefined) {
+        this.setList = this.setListService.getEmpty();
       }
       else {
-        return this.dataService.findSetListById(setlistId)
+        this.dataService.findSetListById(id).subscribe((setList) => {
+          this.setList = setList;
+          if(this.setList !== undefined) {
+            this.entries = this.setListService.createEntriesModel(this.setList.setListEntries);
+          }  
+        });
       }
-    }
-    )).subscribe((setList) => {
-      this.setList = setList;
-      if(this.setList !== undefined) {
-        this.entries = this.setListService.createEntriesModel(this.setList.setListEntries);
-      }  
     });    
-
   }
 
   ionViewDidLoad() {

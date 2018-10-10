@@ -1,19 +1,11 @@
 import { AuthService } from './../../auth.service';
-import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Song, DataService } from './../../data.service';
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { NavController, NavParams } from '@ionic/angular';
 import { FeedbackController } from '../../feedback.controller';
 import { switchMap } from 'rxjs/operators';
-
-/**
- * Generated class for the SongeditPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { of } from 'rxjs';
 
 @Component({
   selector: 'page-songedit',
@@ -24,7 +16,8 @@ export class SongeditPage {
 
   public song: Song = this.newSong();
 
-  constructor(private authService: AuthService, private navController: NavController, private route: ActivatedRoute, private dataService: DataService, private feedbackCtrl: FeedbackController) {}
+  constructor(private authService: AuthService, private navController: NavController, private route: ActivatedRoute,
+    private dataService: DataService, private feedbackCtrl: FeedbackController) {}
 
   ngOnInit() {
     this.initSong();
@@ -32,15 +25,14 @@ export class SongeditPage {
   }
   
   initSong() {
-    this.route.paramMap.subscribe(((params: ParamMap) => { 
-      let songId = params.get("id");
-      if(songId != undefined) {
-        this.dataService.findSongById(songId).subscribe((song) => this.song = song);
+    this.route.paramMap.pipe(switchMap((params: ParamMap) => of(params.get("id")))).subscribe((id) => {
+      if(id != undefined) {
+        this.dataService.findSongById(id).subscribe((song) => this.song = song);
       }
       else {
         this.song = this.newSong();
       }
-    }));
+    }); 
   }
 
   newSong() {

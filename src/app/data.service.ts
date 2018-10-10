@@ -95,6 +95,16 @@ export class DataService {
     }
   }
 
+  findAllSetlists() : Observable<SetList[]> {
+    if(this.userDoc != undefined) {
+      this.setListsCollection = this.userDoc.collection<SetList>("/setlists", ref => ref.orderBy("date", "desc"));
+      return this.setListsCollection.valueChanges();  
+    }
+    else {
+      return of([] as SetList[]);
+    }
+  }
+
   initSetListsCollection() {
     this.setListsCollection = this.userDoc.collection<SetList>("/setlists", ref => ref.orderBy("date", "desc"));
 
@@ -149,7 +159,12 @@ export class DataService {
   }
 
   findSetListById(id: string) {
-    return this.setListsCollection.doc(id).valueChanges() as Observable<SetList>;
+    if(this.setListsCollection != undefined) {
+      return this.setListsCollection.doc(id).valueChanges() as Observable<SetList>;
+    }
+    else {
+      return of({} as SetList);
+    }
   }
 
   async removeAllSongs() {
