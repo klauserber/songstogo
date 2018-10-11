@@ -19,6 +19,7 @@ export class SetListeditPage implements OnInit{
 
   setList: SetList;
   entries: SetListEntryModel[] = [];
+  songs: Observable<Song[]>;
   selectedIndex: number = undefined;
   
 
@@ -29,11 +30,13 @@ export class SetListeditPage implements OnInit{
   }
   
   ngOnInit() {
-    this.initSetList();
-    this.authService.loginState.subscribe((user) => this.initSetList());
+    this.initLists();
+    this.authService.loginState.subscribe((user) => this.initLists());
   }
 
-  initSetList() {
+  initLists() {
+    this.songs = this.dataService.findAllSongs();
+
     this.route.paramMap.pipe(switchMap((params: ParamMap) => of(params.get("id")))).subscribe((id) => {
       
       if(id === undefined) {
