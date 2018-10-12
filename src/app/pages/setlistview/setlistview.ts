@@ -44,9 +44,10 @@ export class SetListviewPage implements OnInit {
 
   async showRemoveConfirm(event) {
     event.stopPropagation();
+    let title = this.setList.title;
     const confirm = await this.alertCtrl.create({
       header: "Remove SetList",
-      message: 'Remove "' + this.setList.title + '"?',
+      message: 'Remove "' + title + '"?',
       buttons: [
         {
           text: 'No',
@@ -59,10 +60,10 @@ export class SetListviewPage implements OnInit {
           handler: async () => {
             try {
               await this.dataService.removeSetList(this.setList.id);
-              this.feedbackCtrl.successFeedback('SetList "' + this.setList.title + '" removed');
+              this.feedbackCtrl.successFeedback('SetList "' + title + '" removed');
               this.navController.goBack();
             } catch (error) {
-              this.feedbackCtrl.errorFeedback('Failed to remove SetList "' + this.setList.title + '"', error);
+              this.feedbackCtrl.errorFeedback('Failed to remove SetList "' + title + '"', error);
             }
           }
         }
@@ -70,6 +71,5 @@ export class SetListviewPage implements OnInit {
     });
     confirm.present();
   }
-
 
 }

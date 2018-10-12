@@ -22,7 +22,7 @@ export class SetListService {
   getEmpty() {
     return { 
       id: null,
-      date: 0,
+      date: Date.now(),
       title: "",
       setListEntries: []
     } as SetList;
@@ -51,6 +51,9 @@ export class SetListService {
 
   createEntriesModel(entries: SetListEntry[]) {
     let entriesModel: SetListEntryModel[] = [];
+    if(entries === undefined) {
+      return entriesModel;
+    }
     console.log("create " + entries.length);
     for(let entry of entries) {
       let entryType: SetListEntryType;

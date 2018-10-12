@@ -39,16 +39,16 @@ export class SetListeditPage implements OnInit{
 
     this.route.paramMap.pipe(switchMap((params: ParamMap) => of(params.get("id")))).subscribe((id) => {
       
-      if(id === undefined) {
-        this.setList = this.setListService.getEmpty();
-      }
-      else {
+      if(id != undefined) {
         this.dataService.findSetListById(id).subscribe((setList) => {
           this.setList = setList;
           if(this.setList !== undefined) {
             this.entries = this.setListService.createEntriesModel(this.setList.setListEntries);
           }  
         });
+      }
+      else {
+        this.setList = this.setListService.getEmpty();
       }
     });    
   }
