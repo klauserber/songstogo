@@ -26,6 +26,8 @@ export class SetListeditPage implements OnInit{
   constructor(private authService: AuthService, public router: Router, public route: ActivatedRoute, private navController: NavController,
       private dataService : DataService, private setListService: SetListService,
       private FeedbackCtrl: FeedbackController) {
+
+        this.setList = setListService.getEmpty();
     
   }
   
