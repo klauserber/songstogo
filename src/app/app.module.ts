@@ -31,6 +31,8 @@ import { FeedbackController } from './feedback.controller';
 import { RouteReuseStrategy } from '@angular/router';
 import { Facebook } from '@ionic-native/facebook/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 var firebaseconfig = {
@@ -62,7 +64,8 @@ var firebaseconfig = {
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
     AngularFireDatabaseModule,
-    FormsModule
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     //PapaParseModule
   ],
   entryComponents: [
