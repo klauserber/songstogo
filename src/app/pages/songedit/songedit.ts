@@ -45,8 +45,9 @@ export class SongeditPage {
 
   async songSaveTapped(event) {
     try {
-      await this.dataService.saveSong(this.song);
-      this.feedbackCtrl.successFeedback("Song saved");
+      this.dataService.saveSong(this.song).then(() => {
+        this.feedbackCtrl.successFeedback("Song saved: " + this.song.title);
+      });
       this.navController.goBack();
     }
     catch (error) {

@@ -62,8 +62,9 @@ export class SetListeditPage implements OnInit{
   async setListSaveTapped(event) {
     try {
       this.setList.setListEntries = this.setListService.createSetListEntries(this.entries);
-      await this.dataService.saveSetList(this.setList);
-      this.FeedbackCtrl.successFeedback("Seltlist saved");
+      this.dataService.saveSetList(this.setList).then(() => {
+        this.FeedbackCtrl.successFeedback("Seltlist saved: " + this.setList.title);
+      });
     } catch (error) {
       this.FeedbackCtrl.errorFeedback("Seltlist save error", error);
     }
