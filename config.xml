@@ -20,6 +20,11 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
+        <!-- https://github.com/jeduan/cordova-plugin-facebook4/issues/599 -->
+        <config-file parent="/resources" target="./res/values/strings.xml">
+            <string name="fb_app_id">238695393326428</string>
+            <string name="fb_app_name">de-isium-songstogo</string>
+        </config-file>
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
@@ -93,5 +98,5 @@
         <variable name="APP_ID" value="238695393326428" />
         <variable name="APP_NAME" value="de-isium-songstogo" />
     </plugin>
-    <engine name="android" spec="7.1.1" />
+    <engine name="android" spec="7.0.0" />
 </widget>
