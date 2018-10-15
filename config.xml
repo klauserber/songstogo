@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="de.isium.songstogo" version="0.9.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>songstogo</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
@@ -20,7 +20,6 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="android">
-        <!-- https://github.com/jeduan/cordova-plugin-facebook4/issues/599 -->
         <config-file parent="/resources" target="./res/values/strings.xml">
             <string name="fb_app_id">238695393326428</string>
             <string name="fb_app_name">de-isium-songstogo</string>
@@ -98,5 +97,5 @@
         <variable name="APP_ID" value="238695393326428" />
         <variable name="APP_NAME" value="de-isium-songstogo" />
     </plugin>
-    <engine name="android" spec="7.0.0" />
+    <engine name="android" spec="7.1.1" />
 </widget>
