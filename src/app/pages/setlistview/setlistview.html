@@ -11,7 +11,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let entry of entries; let idx = index" lines="full" slot="start" [routerLink]="'/setlistslider/' + setList?.id + '/' + idx">
+    <ion-item *ngFor="let entry of entries; let idx = index" lines="full" slot="start" [href]="'/setlistslider/' + setList?.id + '/' + idx">
       <ion-label>{{entry.songNumber}}. {{entry.title}}</ion-label>
       <ion-icon slot="start" name="document"></ion-icon>
     </ion-item>
