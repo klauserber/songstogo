@@ -27,12 +27,19 @@ export class SetListSliderPage {
   entries: SetListEntryModel[];
   setList: SetList;
 
+  showPrev: boolean = true;
+  showNext: boolean = true;
+
   constructor(private route: ActivatedRoute, private authService: AuthService, private dataService: DataService,
     private setListService: SetListService) {}
 
   ngOnInit() {
     this.initSetList();
     this.authService.loginState.subscribe((user) => this.initSetList());
+  }
+
+  ngOnChanges() {
+    console.log("ngOnChanges");
   }
 
   async initSetList() {
@@ -47,10 +54,28 @@ export class SetListSliderPage {
           this.setList = setList;
           this.entries = this.setListService.createEntriesModel(setList.setListEntries);
           this.slides.ionSlidesDidLoad.subscribe((val) => {
-            this.slides.slideTo(parseInt(p.index), 0);
-        });
+            this.updateList(p.index);
+            // Workaround for reload
+            setTimeout(() => {
+              this.updateList(p.index);
+            }, 1000);
+          });
+          this.slides.ionSlideDidChange.subscribe((val) => {
+            this.updateButtons();
+          });
       });
     });
+  }
+
+  private updateButtons() {
+    this.slides.isBeginning().then((val) => this.showPrev = !val);
+    this.slides.isEnd().then((val) => this.showNext = !val);
+  }
+
+  private updateList(index) {
+    this.slides.update();
+    this.slides.slideTo(parseInt(index));
+    this.updateButtons();                
   }
 
 }
