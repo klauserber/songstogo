@@ -4,7 +4,7 @@
 # https://coderwall.com/p/r09hoq/android-generate-release-debug-keystores
 
 # debug
-keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
+keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
 
 # google: https://console.firebase.google.com/u/0/project/de-isium-songstogo/settings/general/android:de.isium.songstogo
 keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android

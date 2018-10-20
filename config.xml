@@ -90,12 +90,14 @@
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
-    <plugin name="cordova-plugin-googleplus" spec="^5.3.2">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.1031297615094-eo5chp8lq9phq2aq48gn9r2vmnsblrha" />
-    </plugin>
     <plugin name="cordova-plugin-facebook4" spec="^3.0.0">
         <variable name="APP_ID" value="238695393326428" />
         <variable name="APP_NAME" value="de-isium-songstogo" />
     </plugin>
+    <plugin name="cordova-plugin-googleplus" spec="5.3.2">
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.1031297615094-ll0soqmrbnkq6ft66plp7h706oid3t5k" />
+        <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
+    </plugin>
     <engine name="android" spec="7.1.1" />
+    <engine name="ios" spec="4.5.5" />
 </widget>
