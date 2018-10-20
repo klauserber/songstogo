@@ -11,7 +11,7 @@ keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -sto
 
 # facebook: https://developers.facebook.com/apps/238695393326428/dashboard/
 # Issue: https://github.com/jeduan/cordova-plugin-facebook4/issues/599
-keytool -exportcert -alias androiddebugkey -keystore %HOMEPATH%\.android\debug.keystore | openssl sha1 -binary | openssl base64
+keytool -exportcert -alias androiddebugkey -keystore ~\.android\debug.keystore | openssl sha1 -binary | openssl base64
 
 #release
 
