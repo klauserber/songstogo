@@ -17,6 +17,7 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 })
 export class SetListeditPage implements OnInit{
 
+  addMode = false;
   setList: SetList;
   entries: SetListEntryModel[] = [];
   songs: Observable<Song[]>;
@@ -77,6 +78,18 @@ export class SetListeditPage implements OnInit{
 
   entryTapped(event, entry: SetListEntryModel, index: number) {
     this.selectedIndex = (index === this.selectedIndex) ? undefined : index;
+  }
+
+  addModeOn() {
+    this.addMode = true;
+  }
+ 
+  addModeOff() {
+    this.addMode = false;
+  }
+
+  isSongAdded(songid) {
+    return this.setListService.isSongInSetList(this.entries, songid);
   }
 
   songTapped(event, song: Song) {

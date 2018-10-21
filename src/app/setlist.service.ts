@@ -91,6 +91,15 @@ export class SetListService {
     
   }
 
+  isSongInSetList(entriesModel: SetListEntryModel[], songid: string) {
+    for(let i=0; i<entriesModel.length; i++) {
+      if(entriesModel[i].song.id === songid) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
 }
 

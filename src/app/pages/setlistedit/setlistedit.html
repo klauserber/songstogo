@@ -9,44 +9,35 @@
 
 
 <ion-content padding>
-  <ion-list>
+  <ion-list *ngIf="addMode">
+    <p>Add Songs to setlist:</p>
+    <ion-item *ngFor="let song of songs | async" lines="full" (click)="songTapped($event, song)"> 
+        <ion-label>{{song.title}}</ion-label>
+        <ion-icon name="checkmark" *ngIf="isSongAdded(song.id)"></ion-icon>
+        <ion-icon name="add-circle" slot="end"></ion-icon>
+        <ion-icon name="arrow-dropright" *ngIf="selectedIndex !== undefined" slot="end"></ion-icon>  
+    </ion-item>            
   </ion-list>
-
-  <ion-grid>
-    <ion-row class="main-content">
-      <ion-col col-6>
-        <!--ion-scroll scrollY="true" style="height: 100%;"-->
-          <ion-list>
-            <ion-item *ngFor="let song of songs | async" lines="full" (click)="songTapped($event, song)"> 
-                <ion-label>{{song.title}}</ion-label>
-                <ion-icon name="add-circle" slot="end"></ion-icon>
-                <ion-icon name="arrow-dropright" *ngIf="selectedIndex !== undefined" slot="end"></ion-icon>  
-            </ion-item>            
-          </ion-list>
-        <!--/ion-scroll-->
-      </ion-col>
-      <ion-col col-6 class="fixed-content">
-        <!--ion-scroll scrollY="true" style="height: 100%;"-->
-          <ion-item style="margin-bottom: 30px">
-            <ion-label floating>Setlist Title</ion-label>
-            <ion-input type="text" [(ngModel)]="setList.title" ></ion-input>
-          </ion-item>
-          <ion-list>
-            <ion-item id="entry-{{idx}}" *ngFor="let entry of entries; let idx = index" 
-                (click)="entryTapped($event, entry, idx)" [ngClass]="selectedIndex === idx ? 'entry-selected' : 'none'">
-              <ion-label>{{entry.songNumber}}. {{entry.title}}</ion-label>
-              <ion-icon name="arrow-dropup" slot="end" *ngIf="dropUpVisible(idx)" style="padding-right: 20px"
-                  (click)="entryMoveTapped($event, entry, idx, 'up')"></ion-icon>
-              <ion-icon name="arrow-dropdown" slot="end" *ngIf="dropDownVisible(idx)" style="padding-right: 20px" 
-                (click)="entryMoveTapped($event, entry, idx, 'down')"></ion-icon>
-              <ion-icon name="remove-circle" slot="end" (click)="entryRemoveTapped($event, entry, idx)"></ion-icon>
-            </ion-item>
-          </ion-list>
-        <!--/ion-scroll-->
-      </ion-col>
-    </ion-row>
-  </ion-grid>
   
+  <div *ngIf="!addMode">
+    <ion-item style="margin-bottom: 30px">
+      <ion-label floating>Setlist Title</ion-label>
+      <ion-input type="text" [(ngModel)]="setList.title" ></ion-input>
+    </ion-item>
+    <ion-list>
+      <ion-item id="entry-{{idx}}" *ngFor="let entry of entries; let idx = index" lines="full" 
+          (click)="entryTapped($event, entry, idx)" [ngClass]="selectedIndex === idx ? 'entry-selected' : 'none'">
+        <ion-label>{{entry.songNumber}}. {{entry.title}}</ion-label>
+        <ion-icon name="remove-circle" slot="start" (click)="entryRemoveTapped($event, entry, idx)"></ion-icon>
+        <ion-icon name="arrow-dropup" slot="start" *ngIf="dropUpVisible(idx)" style="padding-right: 10px"
+            (click)="entryMoveTapped($event, entry, idx, 'up')"></ion-icon>
+        <div name="remove" slot="start" *ngIf="!dropUpVisible(idx)" style="padding-right: 34px"></div>
+        <ion-icon name="arrow-dropdown" slot="start" *ngIf="dropDownVisible(idx)" style="padding-right: 10px" 
+          (click)="entryMoveTapped($event, entry, idx, 'down')"></ion-icon>
+          <div name="remove" slot="start" *ngIf="!dropDownVisible(idx)" style="padding-right: 34px"></div>
+        </ion-item>
+    </ion-list>
+  </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button>
@@ -57,7 +48,15 @@
       <ion-fab-button (click)="setListSaveTapped($event)">
         <ion-icon name="checkmark"></ion-icon>
       </ion-fab-button>
-  
+
+      <ion-fab-button (click)="addModeOn()" *ngIf="!addMode">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+
+      <ion-fab-button (click)="addModeOff()" *ngIf="addMode">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-fab-button>
+
       <ion-fab-button (click)="deleteAll()">
         <ion-icon name="trash"></ion-icon>
       </ion-fab-button>
