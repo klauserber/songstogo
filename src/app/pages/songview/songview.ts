@@ -19,6 +19,7 @@ import { switchMap } from 'rxjs/operators';
 @Component({
   selector: 'page-songview',
   templateUrl: 'songview.html',
+  styleUrls: [ "songview.scss" ]
 })
 export class SongviewPage implements OnInit {
 
