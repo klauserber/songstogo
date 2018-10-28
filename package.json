@@ -76,6 +76,7 @@
     "typescript": "~2.9.2"
   },
   "description": "An Ionic project",
+  "config": { "ionic_source_map": "source-map" },
   "cordova": {
     "plugins": {
       "cordova-plugin-statusbar": {},

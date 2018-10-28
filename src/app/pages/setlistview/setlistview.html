@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-button (click)="goBack($event)">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>Setlist: {{ setList?.title }}</ion-title>
   </ion-toolbar>
@@ -10,14 +12,20 @@
 
 
 <ion-content padding>
-  <ion-list>
-    <ion-item *ngFor="let entry of entries; let idx = index" lines="full" slot="start" [href]="'/setlistslider/' + setList?.id + '/' + idx">
-      <ion-label>{{entry.songNumber}}. {{entry.title}}</ion-label>
+  <ion-list [hidden]="!isListMode()">
+    <ion-item *ngFor="let entry of entries; let idx = index" lines="full" slot="start">
+      <ion-label (click)="openSlide(idx)">{{entry.songNumber}}. {{entry.title}}</ion-label>
       <ion-icon slot="start" name="musical-notes"></ion-icon>
     </ion-item>
   </ion-list>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-slides pager="false" [hidden]="!isSlideMode()">
+    <ion-slide *ngFor="let entry of entries; let idx = index">
+      <pre>{{ entry.song?.text }}</pre>
+    </ion-slide>
+  </ion-slides>
+  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isListMode()">
     <ion-fab-button>
       <ion-icon name="arrow-dropup"></ion-icon>
     </ion-fab-button>
@@ -33,6 +41,18 @@
   
     </ion-fab-list>  
   </ion-fab>  
-
+  
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" *ngIf="isShowPrev()">
+    <ion-fab-button (click)="slides.slidePrev()">
+      <ion-icon name="arrow-dropleft"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShowNext()">
+    <ion-fab-button (click)="slides.slideNext()">
+      <ion-icon name="arrow-dropright"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
 
 </ion-content>
