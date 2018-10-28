@@ -95,7 +95,7 @@
         <variable name="APP_NAME" value="de-isium-songstogo" />
     </plugin>
     <plugin name="cordova-plugin-googleplus" spec="5.3.2">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.1031297615094-ll0soqmrbnkq6ft66plp7h706oid3t5k" />
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.1031297615094-eo5chp8lq9phq2aq48gn9r2vmnsblrha" />
         <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
     </plugin>
     <engine name="android" spec="7.1.1" />
