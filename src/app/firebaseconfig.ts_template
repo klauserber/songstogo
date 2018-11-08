@@ -1,0 +1,12 @@
+
+/* Copy this file to firebaseconfig.ts and paste your Firebase config 
+from this firebase console web app */
+
+export var firebaseconfig = {
+    apiKey: "...",
+    authDomain: "...",
+    databaseURL: "...",
+    projectId: "...",
+    storageBucket: "...",
+    messagingSenderId: "..."
+};

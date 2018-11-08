@@ -34,15 +34,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-
-var firebaseconfig = {
-  apiKey: "AIzaSyDu3AefRahkUFd3LN5Kx0M-9-730USxAgI",
-  authDomain: "de-isium-songstogo.firebaseapp.com",
-  databaseURL: "https://de-isium-songstogo.firebaseio.com",
-  projectId: "de-isium-songstogo",
-  storageBucket: "de-isium-songstogo.appspot.com",
-  messagingSenderId: "1031297615094"
-};
+import { firebaseconfig } from "./firebaseconfig";
 
 @NgModule({
   declarations: [

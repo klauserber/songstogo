@@ -1,7 +1,7 @@
 
 # Development
 
->These are personal notes for my development environment. Feel free and create your firebase project under https://firebase.google.com/ to start your own development.
+This are personal notes for my development environment. Feel free and create your firebase project under https://firebase.google.com/ to start your own development. Place your Firebase configuration in a file named `src/app/firebaseconfig.ts` - see the corresponding template file `firebaseconfig.ts_template`. 
 
 ## ionic install
 
