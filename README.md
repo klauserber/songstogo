@@ -115,6 +115,9 @@ Start the app on the device:
 
 * Download and install Xcode 9 from: https://developer.apple.com/download/more/
 * Create a development team (read more: https://beta.ionicframework.com/docs/installation/ios)
+* Switch Xcode
+
+    sudo xcode-select --switch /Applications/Xcode.app
 
 * Install ios-sim & ios-deploy
 
