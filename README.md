@@ -3,6 +3,10 @@
 
 This are personal notes for my development environment. Feel free and create your firebase project under https://firebase.google.com/ to start your own development. Place your Firebase configuration in a file named `src/app/firebaseconfig.ts` - see the corresponding template file `firebaseconfig.ts_template`. 
 
+## node/npm
+
+You need node 9.x. Consider to use node version manager: https://github.com/creationix/nvm
+
 ## ionic install
 
     npm i -g ionic cordova serve
@@ -22,6 +26,17 @@ The browser starts automatically or visit http://localhost:8100
     serve -p 8080 www
 
 Visit http://localhost:8080 and test the offline capabilities.
+
+## Java setup
+
+Install java8 in the way you like (brew on MacOSX, apt-get or similar on linux, scoop or similar on Windows):
+
+    brew tap caskroom/versions
+    brew cask install java8
+
+... and also gradle
+
+    brew install gradle
 
 ## Android Setup
 
@@ -55,17 +70,6 @@ Create a virtual device:
 Test the virtual device:
     
     emulator -avd "Nexus9"
-
-## Java setup
-
-Install java8 in the way you like (brew on MacOSX, apt-get or similar on linux, scoop or similar on Windows):
-
-    brew tap caskroom/versions
-    brew cask install java8
-
-... and also gradle
-
-    brew install gradle
 
 
 ## Test with a emulated Andriod device
