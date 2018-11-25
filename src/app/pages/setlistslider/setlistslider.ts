@@ -2,7 +2,7 @@ import { DataService } from './../../data.service';
 import { switchMap } from 'rxjs/operators';
 import { AuthService } from './../../auth.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Component, ViewChild } from '@angular/core';
+import {Component, OnChanges, OnInit, ViewChild} from '@angular/core';
 import { NavController, NavParams, Slides } from '@ionic/angular';
 import { SetListEntryModel, SetListService } from '../../setlist.service';
 import { SetList } from '../../data.service';
@@ -18,17 +18,17 @@ import { of } from 'rxjs';
 @Component({
   selector: 'page-setlistslider',
   templateUrl: 'setlistslider.html',
-  styleUrls: [ "setlistslider.scss" ]
+  styleUrls: [ 'setlistslider.scss' ]
 })
-export class SetListSliderPage {
+export class SetListSliderPage implements OnInit, OnChanges {
 
   @ViewChild(Slides) slides: Slides;
 
   entries: SetListEntryModel[];
   setList: SetList;
 
-  showPrev: boolean = true;
-  showNext: boolean = true;
+  showPrev = true;
+  showNext = true;
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private dataService: DataService,
     private setListService: SetListService) {}
@@ -39,14 +39,14 @@ export class SetListSliderPage {
   }
 
   ngOnChanges() {
-    console.log("ngOnChanges");
+    console.log('ngOnChanges');
   }
 
   async initSetList() {
     this.route.paramMap.pipe(switchMap((params: ParamMap) => {
       return of({
-        id: params.get("id"),
-        index: params.get("index")
+        id: params.get('id'),
+        index: params.get('index')
       })
     })).subscribe((p) => {
       this.dataService.findSetListById(p.id)
@@ -74,8 +74,8 @@ export class SetListSliderPage {
 
   private updateList(index) {
     this.slides.update();
-    this.slides.slideTo(parseInt(index));
-    this.updateButtons();                
+    this.slides.slideTo(parseInt(index, 10));
+    this.updateButtons();
   }
 
 }

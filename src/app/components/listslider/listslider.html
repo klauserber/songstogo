@@ -1,0 +1,40 @@
+
+<ion-content>
+
+  <ion-slides pager="false" [hidden]="!isSlideMode()">
+    <ion-slide *ngFor="let entry of entries; let idx = index">
+      <pre>{{ entry.song?.text }}</pre>
+    </ion-slide>
+  </ion-slides>
+  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isListMode()">
+    <ion-fab-button>
+      <ion-icon name="arrow-dropup"></ion-icon>
+    </ion-fab-button>
+  
+    <ion-fab-list side="top">
+      <ion-fab-button [routerLink]="'/setlistedit/' + setList?.id">
+        <ion-icon name="create"></ion-icon>
+      </ion-fab-button>
+  
+      <ion-fab-button (click)="showRemoveConfirm($event)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-fab-button>
+  
+    </ion-fab-list>  
+  </ion-fab>  
+  
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" *ngIf="isShowPrev()">
+    <ion-fab-button (click)="slides.slidePrev()">
+      <ion-icon name="arrow-dropleft"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShowNext()">
+    <ion-fab-button (click)="slides.slideNext()">
+      <ion-icon name="arrow-dropright"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+
+</ion-content>
