@@ -111,7 +111,7 @@ Start the app on the device:
 
 ## iOS Setup
 
-*only on mac*
+_only on mac_
 
 * Download and install Xcode 9 from: https://developer.apple.com/download/more/
 * Create a development team (read more: https://beta.ionicframework.com/docs/installation/ios)

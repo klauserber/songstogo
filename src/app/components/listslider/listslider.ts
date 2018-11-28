@@ -2,9 +2,7 @@ import { FeedbackController } from './../../feedback.controller';
 import { NavController, AlertController, Slides, Content } from '@ionic/angular';
 import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { SetListSliderPage } from './../setlistslider/setlistslider';
 import { SetListService, SetListEntryModel } from './../../setlist.service';
-import { SetListeditPage } from './../setlistedit/setlistedit';
 import { DataService, SetList } from './../../data.service';
 import { Component, ViewChild } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
@@ -16,7 +14,7 @@ import { AuthService } from '../../auth.service';
   templateUrl: 'listslider.html',
   styleUrls: [ "listslider.scss" ]
 })
-export class SetListviewPage implements OnInit {
+export class ListSlider implements OnInit {
   
   @ViewChild(Content) content: Content;
   @ViewChild(Slides) slides: Slides;
