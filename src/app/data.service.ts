@@ -5,7 +5,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable, of } from 'rxjs';
 
 import * as firebase from 'firebase/app';
-//import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
+// import { PapaParseService, PapaParseConfig } from 'ngx-papaparse';
 
 import * as moment from 'moment';
 
@@ -54,20 +54,19 @@ export class DataService {
 
 
   initUserDoc(user: firebase.User) {
-    if(user !== null) {
-      this.userDoc =  this.afs.doc<StgUser>("users/" +  user.uid);
+    if (user !== null) {
+      this.userDoc =  this.afs.doc<StgUser>('users/' +  user.uid);
       this.stgUser = {
         id: user.uid,
         name: user.displayName,
         providerId: user.providerData[0].providerId
       };
 
-      this.userDoc.set(this.stgUser);
+      this.userDoc.set(this.stgUser).catch((reason) => console.log('cannot set user: ' + reason));
 
       this.initSongsCollection();
       this.initSetListsCollection();
-    }
-    else {
+    } else {
       this.userDoc = null;
       this.stgUser = null;
       this.songs = null;
@@ -77,7 +76,7 @@ export class DataService {
   }
 
   initSongsCollection() {
-    this.songsCollection = this.userDoc.collection<Song>("/songs", ref => ref.orderBy("title"));
+    this.songsCollection = this.userDoc.collection<Song>('/songs', ref => ref.orderBy('title'));
 
     this.songsCollection.valueChanges().subscribe((songs) => {
       this.songs = songs;
@@ -85,28 +84,26 @@ export class DataService {
     });
   }
 
-  findAllSongs() : Observable<Song[]> {
-    if(this.userDoc != undefined) {
-      this.songsCollection = this.userDoc.collection<Song>("/songs", ref => ref.orderBy("title"));
-      return this.songsCollection.valueChanges();  
-    }
-    else {
+  findAllSongs(): Observable<Song[]> {
+    if (this.userDoc !== undefined) {
+      this.songsCollection = this.userDoc.collection<Song>('/songs', ref => ref.orderBy('title'));
+      return this.songsCollection.valueChanges();
+    } else {
       return of([] as Song[]);
     }
   }
 
-  findAllSetlists() : Observable<SetList[]> {
-    if(this.userDoc != undefined) {
-      this.setListsCollection = this.userDoc.collection<SetList>("/setlists", ref => ref.orderBy("date", "desc"));
-      return this.setListsCollection.valueChanges();  
-    }
-    else {
+  findAllSetlists(): Observable<SetList[]> {
+    if (this.userDoc !== undefined) {
+      this.setListsCollection = this.userDoc.collection<SetList>('/setlists', ref => ref.orderBy('date', 'desc'));
+      return this.setListsCollection.valueChanges();
+    } else {
       return of([] as SetList[]);
     }
   }
 
   initSetListsCollection() {
-    this.setListsCollection = this.userDoc.collection<SetList>("/setlists", ref => ref.orderBy("date", "desc"));
+    this.setListsCollection = this.userDoc.collection<SetList>('/setlists', ref => ref.orderBy('date', 'desc'));
 
     this.setListsCollection.valueChanges().subscribe((setLists) => {
       this.setLists = setLists;
@@ -114,7 +111,7 @@ export class DataService {
   }
 
   getSongsMap() {
-    if(this.songsMap === null) {
+    if (this.songsMap === null) {
       this.songsMap = new Map();
       this.songs.forEach((song) => {
         this.songsMap.set(song.id, song);
@@ -124,18 +121,18 @@ export class DataService {
   }
 
   async saveSong(song: Song) {
-    if(song.id === undefined || song.id === null) {
+    if (song.id === undefined || song.id === null) {
       song.id = this.afs.createId();
     }
     return this.songsCollection.doc(song.id).set(song);
 
     // Test Errors ...
-    //return new Promise((res, rej) => rej("just failed"));
-    //throw new Error("failed!");
+    // return new Promise((res, rej) => rej("just failed"));
+    // throw new Error("failed!");
   }
 
   async saveSetList(setList: SetList) {
-    if(setList.id === undefined || setList.id === null) {
+    if (setList.id === undefined || setList.id === null) {
       setList.id = this.afs.createId();
     }
     return this.setListsCollection.doc(setList.id).set(setList);
@@ -149,27 +146,25 @@ export class DataService {
     return this.setListsCollection.doc(id).delete();
   }
 
-  findSongById(id: string) : Observable<Song> {
-    if(this.songsCollection != undefined) {
+  findSongById(id: string): Observable<Song> {
+    if (this.songsCollection !== undefined) {
       return this.songsCollection.doc(id).valueChanges() as Observable<Song>;
-    }
-    else {
+    } else {
       return of({} as Song);
     }
   }
 
   findSetListById(id: string) {
-    if(this.setListsCollection != undefined) {
+    if (this.setListsCollection !== undefined) {
       return this.setListsCollection.doc(id).valueChanges() as Observable<SetList>;
-    }
-    else {
+    } else {
       return of({} as SetList);
     }
   }
 
   async removeAllSongs() {
-    let batch = this.afs.firestore.batch();
-    let count = this.songs.length;
+    const batch = this.afs.firestore.batch();
+    const count = this.songs.length;
 
     this.songs.forEach((song) => {
       batch.delete(this.songsCollection.doc(song.id).ref);
@@ -177,13 +172,14 @@ export class DataService {
 
     // Commit the batch
     await batch.commit();
-    console.log("batch committed, " + count + " songs removed");
+    console.log('batch committed, ' + count + ' songs removed');
     return count;
   }
 
+  /*
   async removeAllSetLists() {
-    let batch = this.afs.firestore.batch();
-    let count = this.setLists.length;
+    const batch = this.afs.firestore.batch();
+    const count = this.setLists.length;
 
     this.setLists.forEach((setList) => {
       batch.delete(this.songsCollection.doc(setList.id).ref);
@@ -191,23 +187,23 @@ export class DataService {
 
     // Commit the batch
     await batch.commit();
-    console.log("batch committed, " + count + " setLists remved");
+    console.log('batch committed, ' + count + ' setLists remved');
     return count;
   }
-
+  */
 
   async importSongs(file: File) {
     return new Promise((resolve, reject) => {
-      let reader = new FileReader();
-      reader.onloadend = (e) => {
-        let data = jsyaml.safeLoad(reader.result) as Song[];
-        let savePromisses = [];
-        for(let i=0; i < data.length; i++) {
-          let song = data[i];
-          savePromisses.push(this.saveSong(song));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const data = jsyaml.safeLoad(reader.result) as Song[];
+        const savePromises = [];
+        for (let i = 0; i < data.length; i++) {
+          const song = data[i];
+          savePromises.push(this.saveSong(song));
         }
-        Promise.all(savePromisses).then(() => {
-          resolve(savePromisses.length);
+        Promise.all(savePromises).then(() => {
+          resolve(savePromises.length);
         }).catch((err) => {
           reject(err);
         });
@@ -225,15 +221,15 @@ export class DataService {
   Import from SetListhelper HTML-Format
   */
   async importSongsFromHtml(file: File) {
-    return new Promise((resolve, reject) => {
-      let parser = new DOMParser();
+    return new Promise((resolve) => {
+      const parser = new DOMParser();
 
-          let reader = new FileReader();
+          const reader = new FileReader();
 
-          reader.onloadend = async (e) => {
-            let doc = parser.parseFromString(reader.result.toString(), "text/html");
+          reader.onloadend = async () => {
+            const doc = parser.parseFromString(reader.result.toString(), 'text/html');
             console.log(doc);
-            let count = await this.imoprtSongsFromDoc(doc);
+            const count = await this.importSongsFromDoc(doc);
             resolve(count);
           };
           reader.readAsText(file);
@@ -255,22 +251,22 @@ export class DataService {
        7 SongLength
        8 Other
   */
-  async imoprtSongsFromDoc(doc: Document) {
-    let rows = doc.getElementsByTagName("tr");
+  async importSongsFromDoc(doc: Document) {
+    const rows = doc.getElementsByTagName('tr');
 
     let count = 0;
 
-    for(let r=0; r<rows.length; r++) {
-      let row = rows[r];
-      let cells = row.cells;
+    for (let r = 0; r < rows.length; r++) {
+      const row = rows[r];
+      const cells = row.cells;
 
-      let song = {
+      const song = {
         title: cells[0].innerHTML,
         artist: cells[2].innerHTML,
         key: cells[3].innerHTML,
         text: cells[5].innerHTML,
-        tempo: Number.parseInt(cells[6].innerHTML),
-        length: moment.duration("00:" + cells[7].innerHTML).asSeconds(),
+        tempo: Number.parseInt(cells[6].innerHTML, 10),
+        length: moment.duration('00:' + cells[7].innerHTML).asSeconds(),
       } as Song;
 
       console.log(song);

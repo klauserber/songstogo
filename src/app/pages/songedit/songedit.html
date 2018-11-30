@@ -14,12 +14,12 @@
       <ion-input type="text" [(ngModel)]="song.title" ></ion-input>
     </ion-item>
     <ion-item>
-      <ion-textarea  [(ngModel)]="song.text" style="font-family: monospace" style="height: 70vh"></ion-textarea>
+      <ion-textarea  [(ngModel)]="song.text" style="font-family: monospace; height: 70vh"></ion-textarea>
     </ion-item>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="songSaveTapped($event)">
+    <ion-fab-button (click)="songSave($event)">
       <ion-icon name="checkmark"></ion-icon>
     </ion-fab-button>
   </ion-fab>

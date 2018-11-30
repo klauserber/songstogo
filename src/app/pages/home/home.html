@@ -14,9 +14,9 @@
   <h4>Login</h4>
   <p *ngIf="authService.isAuthenticated()">Logged in as {{ authService.getUserInfo() }} </p>
 
-  <ion-button googleLogin *ngIf="!authService.isAuthenticated()" (click)="authService.loginGoogle()">Google Login</ion-button>
-  <ion-button fbLogin *ngIf="!authService.isAuthenticated()" (click)="authService.loginFacebook()">Facebook Login</ion-button>
-  <ion-button fbLogin *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Logout</ion-button>
+  <ion-button *ngIf="!authService.isAuthenticated()" (click)="authService.loginGoogle()">Google Login</ion-button>
+  <ion-button *ngIf="!authService.isAuthenticated()" (click)="authService.loginFacebook()">Facebook Login</ion-button>
+  <ion-button *ngIf="authService.isAuthenticated()" (click)="authService.logout()">Logout</ion-button>
 
   <div *ngIf="authService.isAuthenticated()">
     <h4 style="padding-top: 20px">Data management</h4>
@@ -24,11 +24,12 @@
     <ion-button (click)="onYamlImportClick()">Import songs</ion-button>
     <ion-button (click)="onHtmlImportClick()">Import songs HTML</ion-button>
     <br />
-    <ion-button export (click)="exportSongs($event)">Export songs</ion-button>
-    <ion-button export (click)="showRemoveSongsConfirm($event)">Remove all songs</ion-button>
+    <ion-button (click)="onExportSongs($event)">Export songs</ion-button>
+    <ion-button (click)="onShowRemoveSongsConfirm($event)">Remove all songs</ion-button>
 
-    <input type="file" (change)="onYamlImport($event)" class="file-input" style="opacity: 0" accept=".yaml" #fileInp />
-    <input type="file" (change)="onHtmlImport($event)" class="file-input" style="opacity: 0" accept=".htm,.html" #fileHtmlInp />
+    <input #fileInp type="file" (change)="onYamlImport($event)" class="file-input" style="opacity: 0" accept=".yaml"/>
+    <input #fileHtmlInp type="file" (change)="onHtmlImport($event)" class="file-input" style="opacity: 0"
+           accept=".htm,.html"/>
   </div>
 
 </ion-content>

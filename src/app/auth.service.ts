@@ -17,8 +17,6 @@ export class AuthService {
     authState: Observable<firebase.User>;
 
     loginState: Subject<firebase.User>;
-    
-
 
     constructor(private google: GooglePlus, private facebook: Facebook, private afAuth: AngularFireAuth,
         public platform: Platform, private data: DataService) {
@@ -35,59 +33,61 @@ export class AuthService {
 
 
     loginGoogle() {
-      if(this.platform.is("cordova")) {
+      if (this.platform.is('cordova')) {
         this.google.login(    {
-          //'scopes': '... ', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
-          'webClientId': '1031297615094-eo5chp8lq9phq2aq48gn9r2vmnsblrha.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
-          //'webClientId': '1031297615094-ll0soqmrbnkq6ft66plp7h706oid3t5k.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
-          
-          'offline': true, // optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
+          'webClientId': '1031297615094-eo5chp8lq9phq2aq48gn9r2vmnsblrha.apps.googleusercontent.com',
+          'offline': true,
         }).then((obj) => {
           this.afAuth.auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(obj.idToken))
-          .then((success) => {
-            console.log("signin success");
+          .then(() => {
+            console.log('signin success');
           })
           .catch((error) => {
-            console.log("signin error: " + error);
+            console.log('signin error: ' + error);
           });
         }).catch((err) => {
           console.log(err);
         });
-      }
-      else {
-        this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      } else {
+        this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(() => {
+            console.log('signed in with google');
+        });
       }
     }
 
     loginFacebook() {
-      if(this.platform.is("cordova")) {
+      if (this.platform.is('cordova')) {
         this.facebook.login(['public_profile', 'email']).then((res: FacebookLoginResponse) => {
           this.afAuth.auth.signInWithCredential(firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken))
-          .then((success) => {
-            console.log("signin success");
+          .then(() => {
+            console.log('signin success');
           })
           .catch((error) => {
-            console.log("signin error: " + error);
+            console.log('signin error: ' + error);
           });
         }).catch((e) => {
-          console.log("Error logging into Facebook", e);
+          console.log('Error logging into Facebook', e);
         });
-      }
-      else {
-        this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+      } else {
+        this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()).then(() => {
+            console.log('signed in with facebook');
+        });
       }
     }
 
     logout() {
-      this.afAuth.auth.signOut() + " (" + this.user.providerId + ")";
+      // this.afAuth.auth.signOut() + ' (' + this.user.providerId + ')';
+      this.afAuth.auth.signOut().then(() => {
+          console.log('signed out');
+      });
     }
 
-    getUserInfo() : String {
-      return this.user.displayName + " (" + this.user.providerData[0].providerId + ")";
+    getUserInfo(): String {
+      return this.user.displayName + ' (' + this.user.providerData[0].providerId + ')';
 
     }
 
-    isAuthenticated() : Boolean {
+    isAuthenticated(): Boolean {
       return this.user !== null;
     }
 

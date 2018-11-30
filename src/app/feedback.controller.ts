@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { ToastController } from "@ionic/angular";
+import { Injectable } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 
 
 @Injectable()
@@ -7,7 +7,7 @@ export class FeedbackController {
 
   constructor(private toastCtrl: ToastController) {
   }
-
+  /*
   public handle(promise: Promise<any>, successMsg: string, errorMsg: string) {
     promise.then(() => {
       this.successFeedback(successMsg);
@@ -16,15 +16,15 @@ export class FeedbackController {
     });
     return promise;
   }
-
+  */
 
   successFeedback(msg: string) {
-    this.feedback(msg, "success");
+    this.feedback(msg, 'success').catch((reason) => console.log('cannot display success feedback: ' + reason));
   }
 
   errorFeedback(msg: string, err) {
-    console.log("Error: " + msg, err);
-    this.feedback(msg, "error");
+    console.log('Error: ' + msg, err);
+    this.feedback(msg, 'error').catch((reason) => console.log('cannot display error feedback: ' + reason));
   }
 
   private async feedback(msg: string, cssClass: string) {

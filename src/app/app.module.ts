@@ -3,7 +3,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
-import { SetListSliderPage } from './pages/setlistslider/setlistslider';
 import { SetListService } from './setlist.service';
 import { SetListviewPage } from './pages/setlistview/setlistview';
 import { SetListeditPage } from './pages/setlistedit/setlistedit';
@@ -23,7 +22,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 
-//import { PapaParseModule } from 'ngx-papaparse';
+// import { PapaParseModule } from 'ngx-papaparse';
 
 import { AuthService } from './auth.service';
 import { DataService } from './data.service';
@@ -34,7 +33,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-import { firebaseconfig } from "./firebaseconfig";
+import { firebaseconfig } from './firebaseconfig';
 
 @NgModule({
   declarations: [
@@ -45,8 +44,7 @@ import { firebaseconfig } from "./firebaseconfig";
     SongeditPage,
     SetListsPage,
     SetListeditPage,
-    SetListviewPage,
-    SetListSliderPage
+    SetListviewPage
   ],
   imports: [
     AppRoutingModule,
@@ -58,7 +56,7 @@ import { firebaseconfig } from "./firebaseconfig";
     AngularFireDatabaseModule,
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
-    //PapaParseModule
+    // PapaParseModule
   ],
   entryComponents: [
     SongsToGoApp,
@@ -68,8 +66,7 @@ import { firebaseconfig } from "./firebaseconfig";
     SongeditPage,
     SetListsPage,
     SetListeditPage,
-    SetListviewPage,
-    SetListSliderPage
+    SetListviewPage
   ],
   providers: [
     StatusBar,

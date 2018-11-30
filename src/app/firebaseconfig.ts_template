@@ -2,7 +2,7 @@
 /* Copy this file to firebaseconfig.ts and paste your Firebase config 
 from this firebase console web app */
 
-export var firebaseconfig = {
+export let firebaseconfig = {
     apiKey: "...",
     authDomain: "...",
     databaseURL: "...",

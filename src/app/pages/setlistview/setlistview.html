@@ -21,7 +21,7 @@
   </ion-list>
 
   <ion-slides pager="false" [hidden]="!isSlideMode()">
-    <ion-slide *ngFor="let entry of entries; let idx = index">
+    <ion-slide *ngFor="let entry of entries;">
       <pre>{{ entry.song?.text }}</pre>
     </ion-slide>
   </ion-slides>
@@ -36,7 +36,7 @@
         <ion-icon name="create"></ion-icon>
       </ion-fab-button>
   
-      <ion-fab-button (click)="showRemoveConfirm($event)">
+      <ion-fab-button (click)="onShowRemoveConfirm($event)">
         <ion-icon name="trash"></ion-icon>
       </ion-fab-button>
   

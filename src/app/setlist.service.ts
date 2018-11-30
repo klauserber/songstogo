@@ -1,6 +1,5 @@
-import { of } from 'rxjs';
 import { SetListEntry, SetList, DataService, Song } from './data.service';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 export enum SetListEntryType {
   SONG,
@@ -19,20 +18,29 @@ export class SetListService {
 
   constructor(private dataService: DataService) {}
 
-  getEmpty() {
-    return { 
+  static getEmpty() {
+    return {
       id: null,
       date: Date.now(),
-      title: "",
+      title: '',
       setListEntries: []
     } as SetList;
   }
 
+  static isSongInSetList(entriesModel: SetListEntryModel[], songId: string) {
+      for (let i = 0; i < entriesModel.length; i++) {
+          if (entriesModel[i].song.id === songId) {
+              return true;
+          }
+      }
+      return false;
+  }
+
   createSetListEntries(entriesModel: SetListEntryModel[]) {
-    let setListEntries : SetListEntry[] = [];
+    const setListEntries: SetListEntry[] = [];
     entriesModel.forEach((entry) => {
-      switch(entry.entryType) {
-        case SetListEntryType.SONG: 
+      switch (entry.entryType) {
+        case SetListEntryType.SONG:
           setListEntries.push({
             pauseTitle: null,
             songId: entry.song.id
@@ -50,23 +58,23 @@ export class SetListService {
   }
 
   createEntriesModel(entries: SetListEntry[]) {
-    let entriesModel: SetListEntryModel[] = [];
-    if(entries === undefined) {
+    const entriesModel: SetListEntryModel[] = [];
+    if (entries === undefined) {
       return entriesModel;
     }
-    console.log("create " + entries.length);
-    for(let entry of entries) {
+    console.log('create ' + entries.length);
+    for (const entry of entries) {
       let entryType: SetListEntryType;
       let title: string;
       let song: Song;
-      console.log(entry.songId + " found");
-      
-      if(entry.songId !== null) {
+      console.log(entry.songId + ' found');
+
+      if (entry.songId !== null) {
         entryType = SetListEntryType.SONG;
         song = this.dataService.getSongsMap().get(entry.songId);
         title = (song) ? song.title : null;
       }
-      //let type = entry.songId != null ? SetListEntryType.SONG : SetListEntryType.PAUSE;
+      // let type = entry.songId != null ? SetListEntryType.SONG : SetListEntryType.PAUSE;
       entriesModel.push({
         song: song,
         songNumber: 0,
@@ -82,24 +90,13 @@ export class SetListService {
 
     let numb = 1;
     entriesModel.forEach((entry) => {
-      if(SetListEntryType.SONG === entry.entryType) {
+      if (SetListEntryType.SONG === entry.entryType) {
         entry.songNumber = numb++;
       }
     });
 
     return entriesModel;
-    
   }
-
-  isSongInSetList(entriesModel: SetListEntryModel[], songid: string) {
-    for(let i=0; i<entriesModel.length; i++) {
-      if(entriesModel[i].song.id === songid) {
-        return true;
-      }
-    }
-    return false;
-  }
-
 
 }
 

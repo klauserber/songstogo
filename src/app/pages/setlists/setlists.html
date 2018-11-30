@@ -9,7 +9,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let setlist of setlists | async" lines="full" slot="start" [routerLink]="'/setlistview/' + setlist.id">
+    <ion-item *ngFor="let setlist of setLists | async" lines="full" slot="start" [routerLink]="'/setlistview/' + setlist.id">
       <ion-label>{{setlist.title}}</ion-label>
       <ion-icon slot="start" name="list"></ion-icon>
     </ion-item>

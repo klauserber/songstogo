@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 import { AuthService } from '../../auth.service';
 
@@ -20,42 +20,46 @@ export class HomePage {
   @ViewChild('fileInp') fileInput: ElementRef;
   @ViewChild('fileHtmlInp') fileHtmlInput: ElementRef;
 
-  constructor(public navCtrl: NavController, public authService: AuthService, private dataService: DataService,
+  constructor(public authService: AuthService, private dataService: DataService,
       private alertCtrl: AlertController, private loadingCtrl: LoadingController, private feedbackCtrl: FeedbackController) {
   }
 
-  async onYamlImport(e) {
+  async yamlImport(e) {
     const loading = await this.loadingCtrl.create({
       message: 'Importing songs...'
     });
     await loading.present();
 
-    let fileList: FileList = e.target.files;
+    const fileList: FileList = e.target.files;
     try {
-      let count = await this.dataService.importSongs(fileList[0]);
+      const count = await this.dataService.importSongs(fileList[0]);
       this.feedbackCtrl.successFeedback(count + ' Songs successfully imported.');
     } catch (error) {
-      this.feedbackCtrl.errorFeedback("Songimport failed", error);
+      this.feedbackCtrl.errorFeedback('Song import failed', error);
     } finally {
       await loading.dismiss();
     }
+  }
+
+  onYamlImport(e) {
+    this.yamlImport(e).catch(reason => this.feedbackCtrl.errorFeedback('error on yaml import.', reason));
   }
 
   onYamlImportClick() {
     this.fileInput.nativeElement.click();
   }
 
-  async onHtmlImport(e) {
-    let fileList: FileList = e.target.files;
+  async htmlImport(e) {
+    const fileList: FileList = e.target.files;
     const loading = await this.loadingCtrl.create({
       message: 'Removing songs...'
     });
     await loading.present();
     try {
-      let count = await this.dataService.importSongsFromHtml(fileList[0]);
-      this.feedbackCtrl.successFeedback(count + " songs successfully importet");
+      const count = await this.dataService.importSongsFromHtml(fileList[0]);
+      this.feedbackCtrl.successFeedback(count + ' songs successfully importet');
     } catch (error) {
-      this.feedbackCtrl.errorFeedback("import failed", error)      
+      this.feedbackCtrl.errorFeedback('import failed', error);
     } finally {
       await loading.dismiss();
     }
@@ -64,21 +68,29 @@ export class HomePage {
     this.fileHtmlInput.nativeElement.click();
   }
 
+  onHtmlImport(e) {
+    this.htmlImport(e).catch(reason => this.feedbackCtrl.errorFeedback('error on html import.', reason));
+  }
+
   async exportSongs() {
     try {
-      let data = await this.dataService.exportSongs();
-      let file = new Blob([ data ], { type: 'text/yaml;charset=utf-8' });
-      fileSaver.saveAs(file, "songs.yaml");
+      const data = await this.dataService.exportSongs();
+      const file = new Blob([ data ], { type: 'text/yaml;charset=utf-8' });
+      fileSaver.saveAs(file, 'songs.yaml');
       this.feedbackCtrl.successFeedback('Songs exported.');
     } catch (error) {
-      this.feedbackCtrl.errorFeedback("Songexport failed", error);
+      this.feedbackCtrl.errorFeedback('Song export failed', error);
     }
+  }
+
+  onExportSongs() {
+    this.exportSongs().catch((reason) => this.feedbackCtrl.errorFeedback('error on song export.', reason));
   }
 
   async showRemoveSongsConfirm(event) {
     event.stopPropagation();
     const confirm = await this.alertCtrl.create({
-      header: "Remove all Songs",
+      header: 'Remove all Songs',
       message: 'Do you want to Remove all songs?',
       buttons: [
         {
@@ -96,18 +108,23 @@ export class HomePage {
             await loading.present();
 
             try {
-              let count = await this.dataService.removeAllSongs();
-              this.feedbackCtrl.successFeedback(count + ' Songs removed.');              
+              const count = await this.dataService.removeAllSongs();
+              this.feedbackCtrl.successFeedback(count + ' Songs removed.');
             } catch (error) {
-              this.feedbackCtrl.errorFeedback("Failed to remove all songs", error);              
+              this.feedbackCtrl.errorFeedback('Failed to remove all songs', error);
             } finally {
-              await loading.dismiss();              
+              await loading.dismiss();
             }
           }
         }
       ]
     });
     await confirm.present();
+  }
+
+  onShowRemoveSongsConfirm(event) {
+    this.showRemoveSongsConfirm(event).catch((reason) => this.feedbackCtrl.errorFeedback(
+        'error on show remove all: ', reason));
   }
 
 }

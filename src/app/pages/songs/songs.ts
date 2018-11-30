@@ -1,24 +1,18 @@
-import { AuthService } from './../../auth.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FeedbackController } from '../../feedback.controller';
-import { SongeditPage } from './../songedit/songedit';
-import { SongviewPage } from './../songview/songview';
+import { AuthService } from '../../auth.service';
 import { DataService, Song } from '../../data.service';
-import { Component } from '@angular/core';
-import { NavController, NavParams } from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
+import {Component, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
 
 
 @Component({
   selector: 'page-songs',
   templateUrl: 'songs.html',
-  styleUrls: [ "songs.scss" ]
+  styleUrls: [ 'songs.scss' ]
 
 })
-export class SongsPage {
+export class SongsPage implements OnInit {
 
-  public songs: Observable<Song[]>
+  public songs: Observable<Song[]>;
 
   constructor(private authService: AuthService, public dataService: DataService) {}
 
@@ -26,7 +20,7 @@ export class SongsPage {
     console.log('onInit SongsPage');
     this.songs = this.dataService.findAllSongs();
 
-    this.authService.loginState.subscribe((user) => {
+    this.authService.loginState.subscribe(() => {
       this.songs = this.dataService.findAllSongs();
     });
   }
