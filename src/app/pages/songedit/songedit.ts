@@ -43,7 +43,7 @@ export class SongeditPage implements OnInit {
       this.dataService.saveSong(this.song).then(() => {
         this.feedbackCtrl.successFeedback('Song saved: ' + this.song.title);
       });
-      this.navController.goBack();
+      this.navController.back();
     } catch (error) {
       this.feedbackCtrl.errorFeedback('Save error', error);
     }

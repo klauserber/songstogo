@@ -1,5 +1,5 @@
 import { FeedbackController } from '../../feedback.controller';
-import { NavController, AlertController, Slides, Content } from '@ionic/angular';
+import { NavController, AlertController, IonSlides, IonContent } from '@ionic/angular';
 import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SetListService, SetListEntryModel } from '../../setlist.service';
@@ -16,8 +16,8 @@ import { AuthService } from '../../auth.service';
 })
 export class SetListviewPage implements OnInit, AfterContentChecked {
 
-  @ViewChild(Content) content: Content;
-  @ViewChild(Slides) slides: Slides;
+  @ViewChild(IonContent) content: IonContent;
+  @ViewChild(IonSlides) slides: IonSlides;
 
 
   listMode = true;
@@ -48,7 +48,7 @@ export class SetListviewPage implements OnInit, AfterContentChecked {
       this.listMode = true;
       event.stopPropagation();
     } else {
-      this.navController.goBack();
+      this.navController.back();
     }
   }
 
@@ -112,7 +112,7 @@ export class SetListviewPage implements OnInit, AfterContentChecked {
             try {
               await this.dataService.removeSetList(this.setList.id);
               this.feedbackCtrl.successFeedback('SetList "' + title + '" removed');
-              this.navController.goBack();
+              this.navController.back();
             } catch (error) {
               this.feedbackCtrl.errorFeedback('Failed to remove SetList "' + title + '"', error);
             }

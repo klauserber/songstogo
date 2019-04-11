@@ -64,7 +64,7 @@ export class SetListeditPage implements OnInit {
     } catch (error) {
       this.FeedbackCtrl.errorFeedback('Seltlist save error', error);
     }
-    this.navController.goBack();
+    this.navController.back();
   }
 
   onSetListSaveTapped() {

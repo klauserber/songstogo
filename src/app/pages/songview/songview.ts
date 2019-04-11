@@ -70,7 +70,7 @@ export class SongviewPage implements OnInit {
             try {
               await this.dataService.removeSong(this.songData.id);
               this.feedbackCtrl.successFeedback('Song "' + this.songData.title + '" removed');
-              this.navController.goBack();
+              this.navController.back();
             } catch (error) {
               this.feedbackCtrl.errorFeedback('Remove song failed', error);
             }
