@@ -13,9 +13,9 @@
     <p>Add Songs to setlist:</p>
     <ion-item *ngFor="let song of songs | async" lines="full" (click)="songTapped($event, song)"> 
         <ion-label>{{song.title}}</ion-label>
-        <ion-icon name="checkmark" *ngIf="isSongAdded(song.id)"></ion-icon>
-        <ion-icon name="add-circle" slot="end"></ion-icon>
-        <ion-icon name="arrow-dropright" *ngIf="selectedIndex !== null" slot="end"></ion-icon>
+        <ion-icon color="medium" name="checkmark" *ngIf="isSongAdded(song.id)"></ion-icon>
+        <ion-icon color="medium" name="add-circle" slot="end"></ion-icon>
+        <ion-icon color="medium" name="arrow-dropright" *ngIf="selectedIndex !== null" slot="end"></ion-icon>
     </ion-item>            
   </ion-list>
   
@@ -28,11 +28,11 @@
       <ion-item id="entry-{{idx}}" *ngFor="let entry of entries; let idx = index" lines="full" 
           (click)="entryTapped($event, entry, idx)" [ngClass]="selectedIndex === idx ? 'entry-selected' : 'none'">
         <ion-label>{{entry.songNumber}}. {{entry.title}}</ion-label>
-        <ion-icon name="remove-circle" slot="start" (click)="entryRemoveTapped($event, entry, idx)"></ion-icon>
-        <ion-icon name="arrow-dropup" slot="start" *ngIf="dropUpVisible(idx)" style="padding-right: 10px"
+        <ion-icon color="medium" name="remove-circle" slot="start" (click)="entryRemoveTapped($event, entry, idx)"></ion-icon>
+        <ion-icon color="medium" name="arrow-dropup" slot="start" *ngIf="dropUpVisible(idx)" style="padding-right: 10px"
             (click)="entryMoveTapped($event, entry, idx, 'up')"></ion-icon>
         <div name="remove" slot="start" *ngIf="!dropUpVisible(idx)" style="padding-right: 34px"></div>
-        <ion-icon name="arrow-dropdown" slot="start" *ngIf="dropDownVisible(idx)" style="padding-right: 10px" 
+        <ion-icon color="medium" name="arrow-dropdown" slot="start" *ngIf="dropDownVisible(idx)" style="padding-right: 10px" 
           (click)="entryMoveTapped($event, entry, idx, 'down')"></ion-icon>
           <div name="remove" slot="start" *ngIf="!dropDownVisible(idx)" style="padding-right: 34px"></div>
         </ion-item>

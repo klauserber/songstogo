@@ -29,7 +29,7 @@ export class SetListService {
 
   static isSongInSetList(entriesModel: SetListEntryModel[], songId: string) {
       for (let i = 0; i < entriesModel.length; i++) {
-          if (entriesModel[i].song.id === songId) {
+          if (entriesModel[i].song !== undefined && entriesModel[i].song.id === songId) {
               return true;
           }
       }
@@ -43,7 +43,7 @@ export class SetListService {
         case SetListEntryType.SONG:
           setListEntries.push({
             pauseTitle: null,
-            songId: entry.song.id
+            songId: entry.song !== undefined ? entry.song.id : ""
           });
         break;
         case SetListEntryType.PAUSE:

@@ -24,15 +24,15 @@ export class FeedbackController {
 
   errorFeedback(msg: string, err) {
     console.log('Error: ' + msg, err);
-    this.feedback(msg, 'error').catch((reason) => console.log('cannot display error feedback: ' + reason));
+    this.feedback(msg, 'danger').catch((reason) => console.log('cannot display error feedback: ' + reason));
   }
 
-  private async feedback(msg: string, cssClass: string) {
+  private async feedback(msg: string, color: string) {
     const toast = await this.toastCtrl.create({
       message: msg,
       duration: 3000,
-      position: 'top',
-      cssClass: cssClass
+      position: 'bottom',
+      color: color
     });
 
     toast.present();
