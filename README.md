@@ -128,6 +128,15 @@ Start the app on the device:
 
     ionic cordova run ios
 
+Workaround 1 - for a working Google login:
+because of a problem with cordova-plugin-googleplus:7.0.1 and iOS 12.2 you need to use Version 5.3.2, see issues: https://github.com/EddyVerbruggen/cordova-plugin-googleplus/issues/565 and https://github.com/EddyVerbruggen/cordova-plugin-googleplus/issues/592
+
+In addition to the infos in the issues, you have to edit the file plugins⁩/cordova-plugin-googleplus⁩/hooks⁩/ios⁩/prerequisites.js and change the 2 findings of context.requireCordovaModule(...) to require(...)
+
+Workaround 2 - to successful deploy to a iOS simulator:
+    cd platform/ios/cordova
+    npm install ios-sim
+
 ## Test with a real iOS device
 
 * Load the XCode project in 'platforms/ios' and select your develop tean für code signing (section 'general')
